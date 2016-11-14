@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "732112203711",
+    "firebase_url": "https://mvptest-af3e6.firebaseio.com",
+    "project_id": "mvptest-af3e6",
+    "storage_bucket": "mvptest-af3e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732112203711:android:28671d77fe218efc",
+        "android_client_info": {
+          "package_name": "jgoguette.twigzolupolus.ca.mvptest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732112203711-jbg463n4fnjajsdn75llofvtmfu1b2kf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaHjjLwltspN1PO0rEMlbMEG_OWCQso_c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
