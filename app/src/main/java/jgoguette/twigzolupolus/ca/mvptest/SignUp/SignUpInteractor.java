@@ -1,6 +1,6 @@
 package jgoguette.twigzolupolus.ca.mvptest.SignUp;
 
-import jgoguette.twigzolupolus.ca.mvptest.Main.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Models.User;
 
 /**
  * Created by jerry on 2016-11-14.

@@ -9,25 +9,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import jgoguette.twigzolupolus.ca.mvptest.BuildConfig;
 import jgoguette.twigzolupolus.ca.mvptest.Main.MainActivity;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 import jgoguette.twigzolupolus.ca.mvptest.SignUp.SignUpActivity;
 
-public class LoginActivity extends AppCompatActivity implements LoginView, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private ProgressDialog progressDialog;
-    private EditText username;
-    private EditText password;
+
+    @Bind(R.id.username)
+    EditText username;
+
+    @Bind(R.id.password)
+    EditText password;
+
     private LoginPresenter presenter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        findViewById(R.id.buttonLogin).setOnClickListener(this);
-        findViewById(R.id.buttonSignup).setOnClickListener(this);
+        // Used for quick testing in Debug Mode
+        if(BuildConfig.DEBUG) {
+            username.setText(getString(R.string.debug_email));
+            password.setText(getString(R.string.debug_password));
+        }
 
         presenter = new LoginPresenterImpl(this);
     }
@@ -35,6 +46,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView, View.
     @Override protected void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.buttonLogin)
+    public void loginTapped(View view) {
+        presenter.validateCredentials(username.getText().toString(), password.getText().toString());
+    }
+
+    @OnClick(R.id.buttonSignup)
+    public void signUpTapped(View view) {
+        navigateToSignUp();
     }
 
     @Override public void showProgress() {
@@ -84,13 +105,5 @@ public class LoginActivity extends AppCompatActivity implements LoginView, View.
     @Override
     public Context getContext() {
         return LoginActivity.this;
-    }
-
-    @Override public void onClick(View v) {
-        if(v == findViewById(R.id.buttonLogin))
-            presenter.validateCredentials(username.getText().toString(), password.getText().toString());
-
-        if(v == findViewById(R.id.buttonSignup))
-            navigateToSignUp();
     }
 }

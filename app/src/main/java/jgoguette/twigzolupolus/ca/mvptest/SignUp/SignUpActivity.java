@@ -9,20 +9,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jgoguette.twigzolupolus.ca.mvptest.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.mvptest.Main.MainActivity;
-import jgoguette.twigzolupolus.ca.mvptest.Main.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Models.User;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
-public class SignUpActivity extends AppCompatActivity implements SignUpView, View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements SignUpView {
 
+    @Bind(R.id.editTextEmail)
+    EditText email;
 
-    private EditText email;
-    private EditText password;
-    private EditText name;
-    private EditText department;
+    @Bind(R.id.editTextPassword)
+    EditText password;
+
+    @Bind(R.id.editTextName)
+    EditText name;
+
+    @Bind(R.id.editTextDepartment)
+    EditText department;
+
     private User user;
-
     private ProgressDialog progressDialog;
 
     private SignUpPresenter presenter;
@@ -31,12 +40,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        email = (EditText) findViewById(R.id.editTextEmail);
-        password = (EditText) findViewById(R.id.editTextPassword);
-        name = (EditText) findViewById(R.id.editTextName);
-        department = (EditText) findViewById(R.id.editTextDepartment);
-        findViewById(R.id.buttonSignup).setOnClickListener(this);
+        ButterKnife.bind(this);
 
         presenter = new SignUpPresenterImpl(this);
     }
@@ -50,6 +54,15 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Vie
     public void onBackPressed() {
         startActivity(new Intent(this, LoginActivity.class));
         super.onBackPressed();
+    }
+
+    @OnClick(R.id.buttonSignup)
+    public void signUpTapped(View view) {
+        presenter.signUp(email.getText().toString(),
+                password.getText().toString(),
+                name.getText().toString(),
+                department.getText().toString()
+        );
     }
 
     @Override
@@ -122,15 +135,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView, Vie
     @Override
     public User getUser() {
         return user;
-    }
-
-    @Override
-    public void onClick(View view) {
-        presenter.signUp(email.getText().toString(),
-                password.getText().toString(),
-                name.getText().toString(),
-                department.getText().toString()
-        );
     }
 }
 
