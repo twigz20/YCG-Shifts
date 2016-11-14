@@ -2,7 +2,7 @@ package jgoguette.twigzolupolus.ca.mvptest.SignUp;
 
 import android.content.Context;
 
-import jgoguette.twigzolupolus.ca.mvptest.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Models.User;
 
 /**
  * Created by jerry on 2016-11-14.

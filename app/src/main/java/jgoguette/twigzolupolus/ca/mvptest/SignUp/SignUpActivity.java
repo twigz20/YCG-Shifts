@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import jgoguette.twigzolupolus.ca.mvptest.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.mvptest.Main.MainActivity;
-import jgoguette.twigzolupolus.ca.mvptest.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Models.User;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpView, View.OnClickListener {

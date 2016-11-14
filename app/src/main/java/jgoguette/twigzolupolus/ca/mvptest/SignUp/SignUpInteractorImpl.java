@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import jgoguette.twigzolupolus.ca.mvptest.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Models.User;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
 /**
