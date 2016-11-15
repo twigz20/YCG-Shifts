@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.FeedsFragment;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
 public class MainActivity extends AppCompatActivity
@@ -44,6 +46,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        FeedsFragment fragment = new FeedsFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
     }
 
     @Override

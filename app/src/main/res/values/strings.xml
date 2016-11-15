@@ -17,11 +17,19 @@
     <string name="login_progressDialog_message">Logging in...</string>
 
     <string name="low_level_authorization">employee</string>
-    <string name="users_table">users</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="debug_email">jerry.goguette@gmail.com</string>
     <string name="debug_password">jgoguette</string>
+
+    <string name="photosPath">photos</string>
+    <string name="profilePic">profilePic</string>
+    <string name="profilePicPath">/photos/profilePic</string>
+
+    <!--FireBase Tables -->
+    <string name="users_table">users</string>
+    <string name="feeds_table">feeds</string>
+    <string name="feeds_table_view_limit">50</string>
 </resources>

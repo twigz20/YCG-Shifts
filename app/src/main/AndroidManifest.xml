@@ -23,8 +23,18 @@
         <activity
             android:name=".Main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".Main.Services.MyDownloadService"
+            android:enabled="false"
+            android:exported="false" />
+
+        <service
+            android:name=".Main.Services.MyUploadService"
+            android:enabled="false"
+            android:exported="false"></service>
     </application>
 
 </manifest>

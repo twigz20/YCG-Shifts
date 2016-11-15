@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jgoguette.twigzolupolus.ca.mvptest.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.mvptest.Main.MainActivity;
-import jgoguette.twigzolupolus.ca.mvptest.Models.User;
+import jgoguette.twigzolupolus.ca.mvptest.Model.User;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpView {

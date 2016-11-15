@@ -1,4 +1,4 @@
-package jgoguette.twigzolupolus.ca.mvptest.Models;
+package jgoguette.twigzolupolus.ca.mvptest.Model;
 
 import java.io.Serializable;
 
