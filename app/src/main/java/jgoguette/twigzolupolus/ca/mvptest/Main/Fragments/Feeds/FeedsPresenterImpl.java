@@ -16,7 +16,7 @@ public class FeedsPresenterImpl implements FeedsPresenter, FeedsInteractor.OnFee
 
     public FeedsPresenterImpl(FeedsView feedsView) {
         this.feedsView = feedsView;
-        feedsInteractor = new FeedsInteractorImpl(feedsView.getMainContext(), this);
+        feedsInteractor = new FeedsInteractorImpl(feedsView.getContext(), this);
     }
 
     @Override

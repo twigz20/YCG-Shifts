@@ -13,7 +13,8 @@ import jgoguette.twigzolupolus.ca.mvptest.Model.Feed;
 
 public interface FeedsView {
 
-    Context getMainContext();
+    Context getContext();
+    void setTitle();
     void loadFeeds();
     void onFeedsLoadedSuccess(FirebaseRecyclerAdapter<Feed, FeedHolder> firebaseRecyclerAdapter);
     void onFeedsLoadedFailure();

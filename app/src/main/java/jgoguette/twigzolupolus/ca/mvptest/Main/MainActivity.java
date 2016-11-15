@@ -2,6 +2,7 @@ package jgoguette.twigzolupolus.ca.mvptest.Main;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,7 +20,12 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import jgoguette.twigzolupolus.ca.mvptest.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.FeedsFragment;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.MessageFragment;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.ScheduleFragment;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.SendBlastFragment;
+import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.SettingsFragment;
 import jgoguette.twigzolupolus.ca.mvptest.Model.User;
 import jgoguette.twigzolupolus.ca.mvptest.R;
 
@@ -82,6 +88,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.main_logout) {
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signOut();
+
+            navigateToLogin();
             return true;
         }
 
@@ -160,22 +170,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            FeedsFragment fragment = new FeedsFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(
-                    R.id.fragmentContainer,
-                    fragment,
-                    fragment.getTag()
-            ).commit();
-            //toolbar.setTitle(user.getValue().getName());
+            navigateToHome();
         } else if (id == R.id.nav_inbox) {
-
+            navigateToMessages();
         } else if (id == R.id.nav_send_blast) {
-
+            navigateToSendBlast();
         } else if (id == R.id.nav_schedule) {
-
+            navigateToSchedule();
         } else if (id == R.id.nav_manage) {
-
+            navigateToSettings();
         }  else if (id == R.id.nav_logout) {
             logOut();
         }
@@ -223,6 +226,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void navigateToHome() {
+        ((MainActivity)context).navigationView.setCheckedItem(R.id.nav_home);
         // Initial Fragment
         FeedsFragment fragment = new FeedsFragment();
         FragmentManager manager = getSupportFragmentManager();
@@ -235,28 +239,59 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void navigateToMessages() {
-
+        MessageFragment fragment = new MessageFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
     }
 
     @Override
     public void navigateToSendBlast() {
-
+        SendBlastFragment fragment = new SendBlastFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
     }
 
     @Override
     public void navigateToSchedule() {
-
+        ScheduleFragment fragment = new ScheduleFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
     }
 
     @Override
     public void navigateToSettings() {
-
+        SettingsFragment fragment = new SettingsFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
     }
 
     @Override
     public void logOut() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
+
+        navigateToLogin();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 }

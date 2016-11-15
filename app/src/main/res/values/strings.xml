@@ -44,4 +44,14 @@
     <string name="title_activity_asynchronous">Asynchronous Events</string>
     <string name="async_error">Could not download events from the internet</string>
     <string name="date_format">yyyy-MM-dd HH:mm:ss</string>
+
+    <string name="message_error">Message body cannot be empty</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Settings_Title">Settings</string>
+    <string name="Schedule_Title">Schedule</string>
+    <string name="Messages_Title">Your Messages</string>
+    <string name="Send_Blast_Title">Send Blast Message</string>
+    <string name="Send_Message_Title">Send New Message</string>
 </resources>

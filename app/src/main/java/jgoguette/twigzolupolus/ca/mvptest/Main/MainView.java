@@ -21,6 +21,8 @@ public interface MainView {
 
     void onProfileSetComplete();
 
+    void navigateToLogin();
+
     void navigateToHome();
 
     void navigateToMessages();

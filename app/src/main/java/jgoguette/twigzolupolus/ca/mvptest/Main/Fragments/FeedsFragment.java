@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.Feeds.FeedsPresenter;
 import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.Feeds.FeedsPresenterImpl;
 import jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.Feeds.FeedsView;
+import jgoguette.twigzolupolus.ca.mvptest.Main.MainActivity;
 import jgoguette.twigzolupolus.ca.mvptest.Main.Views.FeedHolder;
 import jgoguette.twigzolupolus.ca.mvptest.Model.Feed;
 import jgoguette.twigzolupolus.ca.mvptest.R;
@@ -52,6 +53,8 @@ public class FeedsFragment extends Fragment implements FeedsView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
+
+        setTitle();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -92,7 +95,7 @@ public class FeedsFragment extends Fragment implements FeedsView {
     }
 
     @Override
-    public Context getMainContext() {
-        return context;
+    public void setTitle() {
+        ((MainActivity)context).toolbar.setTitle(((MainActivity)context).user.getName());
     }
 }
