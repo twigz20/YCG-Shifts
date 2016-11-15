@@ -15,6 +15,8 @@
     <string name="user_exists_error_title">User Already Registered!</string>
     <string name="user_exists_error_message">Please input a new email address or login with email.</string>
     <string name="login_progressDialog_message">Logging in...</string>
+    <string name="fetch_user_progressDialog_message">Fetching User Profile...</string>
+    <string name="Exit_Text">Press Back Again To Exit</string>
 
     <string name="low_level_authorization">employee</string>
 
@@ -32,4 +34,14 @@
     <string name="users_table">users</string>
     <string name="feeds_table">feeds</string>
     <string name="feeds_table_view_limit">50</string>
+
+    <!-- Calender Strings -->
+    <string name="action_today">Today</string>
+    <string name="action_day_view">Day view</string>
+    <string name="action_three_day_view">3 day view</string>
+    <string name="action_week_view">Week view</string>
+    <string name="title_activity_basic">Basic Example</string>
+    <string name="title_activity_asynchronous">Asynchronous Events</string>
+    <string name="async_error">Could not download events from the internet</string>
+    <string name="date_format">yyyy-MM-dd HH:mm:ss</string>
 </resources>
