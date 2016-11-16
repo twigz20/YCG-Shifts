@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="jgoguette.twigzolupolus.ca.mvptest.Main.Fragments.FeedsFragment">
+    tools:context="jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.FeedsFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"

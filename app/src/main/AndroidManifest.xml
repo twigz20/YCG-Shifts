@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jgoguette.twigzolupolus.ca.mvptest">
+    package="jgoguette.twigzolupolus.ca.ycgshifts">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Login.LoginActivity"
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.Login.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,21 +18,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUp.SignUpActivity"
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.SignUp.SignUpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Main.MainActivity"
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".Main.Services.MyDownloadService"
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.MyDownloadService"
             android:enabled="false"
             android:exported="false" />
 
         <service
-            android:name=".Main.Services.MyUploadService"
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.MyUploadService"
             android:enabled="false"
             android:exported="false"></service>
     </application>

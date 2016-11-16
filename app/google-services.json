@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "732112203711",
-    "firebase_url": "https://mvptest-af3e6.firebaseio.com",
-    "project_id": "mvptest-af3e6",
-    "storage_bucket": "mvptest-af3e6.appspot.com"
+    "project_number": "152960013402",
+    "firebase_url": "https://ycgshifts-625b6.firebaseio.com",
+    "project_id": "ycgshifts-625b6",
+    "storage_bucket": "ycgshifts-625b6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:732112203711:android:28671d77fe218efc",
+        "mobilesdk_app_id": "1:152960013402:android:82e00d66a42f3c01",
         "android_client_info": {
-          "package_name": "jgoguette.twigzolupolus.ca.mvptest"
+          "package_name": "jgoguette.twigzolupolus.ca.ycgshifts"
         }
       },
       "oauth_client": [
         {
-          "client_id": "732112203711-jbg463n4fnjajsdn75llofvtmfu1b2kf.apps.googleusercontent.com",
+          "client_id": "152960013402-o1g0jksc28nr3oq5ctoftd6lsuhuc8lv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBaHjjLwltspN1PO0rEMlbMEG_OWCQso_c"
+          "current_key": "AIzaSyCwsZdA5VTiqV7aM11aOTwjVZWNfOs5mPo"
         }
       ],
       "services": {

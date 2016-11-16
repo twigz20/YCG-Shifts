@@ -30,10 +30,14 @@
     <string name="profilePic">profilePic</string>
     <string name="profilePicPath">/photos/profilePic</string>
 
+    <string name="shift">shift</string>
+
     <!--FireBase Tables -->
     <string name="users_table">users</string>
     <string name="feeds_table">feeds</string>
     <string name="feeds_table_view_limit">50</string>
+    <string name="messages_table">messages</string>
+    <string name="shifts_table">shifts</string>
 
     <!-- Calender Strings -->
     <string name="action_today">Today</string>
@@ -54,4 +58,35 @@
     <string name="Messages_Title">Your Messages</string>
     <string name="Send_Blast_Title">Send Blast Message</string>
     <string name="Send_Message_Title">Send New Message</string>
+
+    <string-array name="days">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+    <string-array name="departments">
+        <item>Produce</item>
+        <item>Cash</item>
+        <item>Grocery</item>
+        <item>Deli</item>
+    </string-array>
+
+    <string-array name="predefinedSendTargets">
+        <item>All</item>
+        <item>Managers</item>
+        <item>Produce Manager</item>
+        <item>Cash Manager</item>
+        <item>Grocery Manager</item>
+        <item>Deli Manager</item>
+    </string-array>
+
+    <string name="manager">Manager</string>
+    <string name="message_Error_message">Cannot send empty message.</string>
+    <string name="subject_Error_message">Cannot send message without subject.</string>
+    <string name="to_Error_message">Must have at least 1 person receiving this message.</string>
 </resources>
