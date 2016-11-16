@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jgoguette.twigzolupolus.ca.ycgshifts">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,13 +34,31 @@
 
         <service
             android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.MyDownloadService"
-            android:enabled="false"
             android:exported="false" />
 
         <service
             android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.MyUploadService"
-            android:enabled="false"
             android:exported="false"></service>
+
+        <service
+            android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.NotificationService"
+            android:exported="false"></service>
+
+        <receiver android:name="jgoguette.twigzolupolus.ca.ycgshifts.Main.Receivers.AlarmReceiver"></receiver>
+
+        <!--
+          Android N SDK has new restrictions around sharing file:// URIs
+          https://developer.android.com/reference/android/support/v4/content/FileProvider.html#ProviderDefinition
+        -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.ycgshifts.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

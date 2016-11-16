@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendMessage.SendMessagePresenter;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendMessage.SendMessagePresenterImpl;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendMessage.SendMessageView;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.MainActivity;
 import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 /**
@@ -49,6 +50,8 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_message, container, false);
+
+        setTitle();
 
         to = (MultiAutoCompleteTextView) view.findViewById(R.id.editTextTo);
 
@@ -116,5 +119,10 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
 
         to.setAdapter(adapter);
         to.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer() );
+    }
+
+    @Override
+    public void setTitle() {
+        ((MainActivity)context).toolbar.setTitle(R.string.Send_Message_Title);
     }
 }

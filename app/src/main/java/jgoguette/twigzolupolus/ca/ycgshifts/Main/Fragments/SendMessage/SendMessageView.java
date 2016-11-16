@@ -26,4 +26,6 @@ public interface SendMessageView {
     void getUserNames();
 
     void onUserNamesFetchedSuccessful(ArrayList<String> userNames);
+
+    void setTitle();
 }

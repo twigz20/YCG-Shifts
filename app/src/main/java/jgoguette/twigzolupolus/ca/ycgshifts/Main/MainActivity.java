@@ -1,20 +1,29 @@
 package jgoguette.twigzolupolus.ca.ycgshifts.Main;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,25 +33,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jgoguette.twigzolupolus.ca.ycgshifts.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.FeedsFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.MessageFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadMessageFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTradeFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ScheduleFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendBlastFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SettingsFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.NotificationService;
+import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 public class MainActivity extends AppCompatActivity
         implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int MY_READ_EXTERNAL_STORAGE = 1;
     private static String TAG = MainActivity.class.getSimpleName();
-    private Context context;
+
+    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final int MY_READ_EXTERNAL_STORAGE = 1;
+    private Uri mFileUri = null;
+    private Uri outputFileUri;
 
     public Toolbar toolbar;
-
     public DrawerLayout drawer;
     public ActionBarDrawerToggle toggle;
     public NavigationView navigationView;
@@ -50,19 +71,18 @@ public class MainActivity extends AppCompatActivity
     // User Profile
     public User user;
 
-    ProgressDialog progressDialog;
-
     MainPresenter presenter;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
 
         user = new User();
 
         presenter = new MainPresenterImpl(this);
+        presenter.getProfilePic();
         presenter.getUserProfile();
     }
 
@@ -120,6 +140,46 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         toggle.syncState();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        // Check if this Activity was launched by clicking on an upload notification
+        if (intent.hasExtra(NotificationService.NOTIFICATION_FOUND)) {
+            openMessage(intent);
+        }
+    }
+
+    private void openMessage(Intent intent) {
+        if(intent.hasExtra(NotificationService.NOTIFICATION_FOUND)) {
+            if (intent.getBooleanExtra("Grouped", true)) {
+                if (intent.hasExtra("Keys")) {
+                    ArrayList<String> keys = intent.getStringArrayListExtra("Keys");
+                    if (!keys.isEmpty()) {
+                        presenter.removeNotifications(keys);
+                    }
+                }
+
+                navigateToMessages();
+            } else {
+                Message message = (Message) intent.getSerializableExtra("Message");
+                presenter.removeNotification(message.getKey());
+                if (message.getType().equals(message
+                        .convertTypeToString(Message.Type.SHIFT_SWAP_NOTIF))) {
+
+                    navigateToReadShiftTradeMessage(message);
+                } else {
+                    navigateToReadMessage(message);
+                }
+            }
+        }
     }
 
     @Override
@@ -204,12 +264,10 @@ public class MainActivity extends AppCompatActivity
         return this;
     }
 
-    @Override
-    public void setUserProfile(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    @Override
     public void setProfileInformation() {
         TextView nav_name = (TextView) findViewById(R.id.nav_name);
         nav_name.setText(user.getName());
@@ -225,7 +283,7 @@ public class MainActivity extends AppCompatActivity
                 int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
                         android.Manifest.permission.READ_EXTERNAL_STORAGE);
                 if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
-                    //openImageIntent();
+                    openImageIntent();
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -235,13 +293,15 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
-        getProfilePic();
     }
 
     @Override
-    public void getProfilePic() {
-
+    public void setProfilePic(Uri uri) {
+        ImageView profilePic = (ImageView) findViewById(R.id.imageView);
+        Picasso.with(MainActivity.this)
+                .load(uri)
+                .fit()
+                .into(profilePic);
     }
 
     @Override public void showProgress() {
@@ -261,9 +321,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onProfileSetComplete() {
+    public void onProfileSuccessfullyRetrieved(User user) {
+        setUser(user);
         setProfileInformation();
         navigateToHome();
+
+        onNewIntent(getIntent());
+        startAlarm();
     }
 
     @Override
@@ -288,6 +352,32 @@ public class MainActivity extends AppCompatActivity
                 fragment,
                 fragment.getTag()
         ).commit();
+    }
+
+    @Override
+    public void navigateToReadMessage(Message message) {
+        ReadMessageFragment fragment =
+                ReadMessageFragment.newInstance(message);
+        FragmentManager manager =
+                getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void navigateToReadShiftTradeMessage(Message message) {
+        ReadShiftTradeFragment fragment =
+                ReadShiftTradeFragment.newInstance(message);
+        FragmentManager manager =
+                getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).addToBackStack(null).commit();
     }
 
     @Override
@@ -325,9 +415,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void logOut() {
+        cancelAlarm();
+        cancelNotifications();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
-
         navigateToLogin();
     }
 
@@ -335,5 +426,129 @@ public class MainActivity extends AppCompatActivity
     public void navigateToLogin() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    public void startAlarm() {
+        presenter.startNotificationService();
+    }
+
+    public void cancelAlarm() {
+        presenter.stopNotificationService();
+    }
+
+    public void cancelNotifications() {
+        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context
+                .NOTIFICATION_SERVICE);
+
+        notificationManager.cancelAll();
+    }
+
+    private void openImageIntent() {
+        // Determine Uri of camera image to save.
+        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "photos" + File.separator);
+        root.mkdirs();
+
+        final String fname = user.getFirebaseId() + ".jpg";
+        final File sdImageMainDirectory = new File(root, fname);
+        outputFileUri = Uri.fromFile(sdImageMainDirectory);
+
+        // Camera.
+        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        final PackageManager packageManager = getPackageManager();
+        final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for(ResolveInfo res : listCam) {
+            final String packageName = res.activityInfo.packageName;
+            final Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(packageName);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            cameraIntents.add(intent);
+        }
+
+        // Choose file storage location, must be listed in res/xml/file_paths.xml
+        File dir = new File(Environment.getExternalStorageDirectory() + "/photos");
+        File file = new File(dir, user.getFirebaseId() + ".jpg");
+        try {
+            // Create directory if it does not exist.
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            boolean created = file.createNewFile();
+            Log.d(TAG, "file.createNewFile:" + file.getAbsolutePath() + ":" + created);
+        } catch (IOException e) {
+            Log.e(TAG, "file.createNewFile" + file.getAbsolutePath() + ":FAILED", e);
+        }
+
+        // Create content:// URI for file, required since Android N
+        // See: https://developer.android.com/reference/android/support/v4/content/FileProvider.html
+        mFileUri = FileProvider.getUriForFile(this,
+                "com.ycgshifts.fileprovider", file);
+
+        Intent pickIntent =
+                new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // Chooser of filesystem options.
+        final Intent chooserIntent = Intent.createChooser(pickIntent, "Select Source");
+
+        // Add the camera options.
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+
+        startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+            final boolean isCamera;
+            if (data == null) {
+                isCamera = true;
+            } else {
+                final String action = data.getAction();
+                if (action == null) {
+                    isCamera = false;
+                } else {
+                    isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                }
+            }
+
+            Uri selectedImageUri;
+            if (isCamera) {
+                selectedImageUri = outputFileUri;
+            } else {
+                selectedImageUri = data == null ? null : data.getData();
+            }
+
+            if (selectedImageUri != null) {
+                setProfilePic(selectedImageUri);
+                uploadProfilePic(selectedImageUri);
+            } else {
+                Log.w(TAG, "File URI is null");
+            }
+        }
+    }
+
+    private void uploadProfilePic(Uri fileUri) {
+        presenter.uploadProfilePic(mFileUri,fileUri);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openImageIntent();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 }

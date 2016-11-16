@@ -12,7 +12,7 @@ import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 
 public interface ScheduleInteractor {
     interface onScheduleLoadedListener {
-        void onScheduleLoaded(ArrayList<Shift> shifts);
+        void onScheduleLoaded(ArrayList<Shift> shifts, int hour);
         void onFailedToLoad();
     }
 

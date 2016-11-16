@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,6 +41,7 @@ public class MyUploadService extends MyBaseTaskService {
 
     // [START declare_ref]
     private StorageReference mStorageRef;
+    private FirebaseAuth firebaseAuth;
     // [END declare_ref]
 
     @Override
@@ -49,6 +51,8 @@ public class MyUploadService extends MyBaseTaskService {
         // [START get_storage_ref]
         mStorageRef = FirebaseStorage.getInstance().getReference();
         // [END get_storage_ref]
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -62,7 +66,7 @@ public class MyUploadService extends MyBaseTaskService {
         Log.d(TAG, "onStartCommand:" + intent + ":" + startId);
         if (ACTION_UPLOAD.equals(intent.getAction())) {
             Uri fileUri = intent.getParcelableExtra(EXTRA_FILE_URI);
-            uploadFromUri(fileUri, intent.getStringExtra("FireBaseUID"));
+            uploadFromUri(fileUri, firebaseAuth.getCurrentUser().getUid());
         }
 
         return START_REDELIVER_INTENT;
@@ -71,7 +75,7 @@ public class MyUploadService extends MyBaseTaskService {
     // [START upload_from_uri]
     private void uploadFromUri(final Uri fileUri, final String uID) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
-        Log.i("FireBaseUID2", "" + uID);
+
         // [START_EXCLUDE]
         taskStarted();
         showUploadProgressNotification();

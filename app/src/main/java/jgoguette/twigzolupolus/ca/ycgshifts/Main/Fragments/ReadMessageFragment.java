@@ -67,6 +67,8 @@ public class ReadMessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_read_message, container, false);
 
+        setTitle();
+
         message.setRead(true);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         DatabaseReference messagesReference =
@@ -97,6 +99,10 @@ public class ReadMessageFragment extends Fragment {
         ((MainActivity)context).toolbar.setTitle(message.getSubject());
 
         return rootView;
+    }
+
+    public void setTitle() {
+        ((MainActivity)context).toolbar.setTitle(message.getSubject());
     }
 
 }

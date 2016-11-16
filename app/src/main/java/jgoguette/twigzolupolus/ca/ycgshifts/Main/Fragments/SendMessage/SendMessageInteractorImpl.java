@@ -258,6 +258,6 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                 listener.onSuccess();
             }
         });
-        /*databaseReference.child("notificationsRequests").child(firebaseId).child(key).setValue(message);*/
+        databaseReference.child("notificationsRequests").child(firebaseId).child(key).setValue(message);
     }
 }

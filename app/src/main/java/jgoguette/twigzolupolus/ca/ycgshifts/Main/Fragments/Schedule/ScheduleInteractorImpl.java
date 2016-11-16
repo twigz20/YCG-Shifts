@@ -3,6 +3,7 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.Schedule;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,11 +15,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.LocalDateTime;
+
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
@@ -36,6 +42,8 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
     private onShiftTradeRequestSentListener tradeRequestSentListener;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
+
+    private final int NULL_HOUR = -1;
 
     public ScheduleInteractorImpl(Context context, onShiftTradeRequestSentListener tradeRequestSentListener, onScheduleLoadedListener scheduleLoadedListener) {
         this.context = context;
@@ -72,7 +80,8 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
                         }
                     }
 
-                    scheduleLoadedListener.onScheduleLoaded(shifts);
+                    int hour = getTodayShiftStartHour(shifts);
+                    scheduleLoadedListener.onScheduleLoaded(shifts, hour);
                 } catch(DatabaseException e) {
                     e.printStackTrace();
                 }
@@ -83,6 +92,31 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
                 //Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public int getTodayShiftStartHour(ArrayList<Shift> shifts) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getString(R.string.date_format), Locale.CANADA);
+        try {
+            for(Shift shift : shifts) {
+                Date shiftDate = dateFormat.parse(shift.getStart_time());
+                Date today = dateFormat.parse(dateFormat.format(cal.getTime()));
+
+                DateFormat targetFormat = new SimpleDateFormat("MMM dd, yyyy (z)");
+                Date shiftD = targetFormat.parse(targetFormat.format(shiftDate));
+                Date todayD = targetFormat.parse(targetFormat.format(today));
+
+                if(shiftD.equals(todayD)) {
+                    LocalDateTime localDate = new LocalDateTime(shiftDate);
+                    return localDate.getHourOfDay();
+                }
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return NULL_HOUR;
     }
 
     @Override
@@ -119,7 +153,7 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "" + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -156,10 +190,10 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
                 tradeRequestSentListener.onSuccess("Request Successfully Sent!");
             }
         });
-        /*databaseReference.child("notificationsRequests")
-                .child(user.getFirebaseId())
+        databaseReference.child("notificationsRequests")
+                .child(otherUser.getFirebaseId())
                 .child(key)
-                .setValue(messages);*/
+                .setValue(message);
     }
 
     @Override

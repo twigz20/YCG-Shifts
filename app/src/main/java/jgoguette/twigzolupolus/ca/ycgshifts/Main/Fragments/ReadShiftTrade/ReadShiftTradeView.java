@@ -8,6 +8,8 @@ import android.net.Uri;
  */
 
 public interface ReadShiftTradeView {
+    void setTitle();
+
     void onShiftTradedSuccess();
     void onShiftTradedFailed();
     void loadProfilePic();

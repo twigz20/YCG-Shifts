@@ -1,7 +1,9 @@
 package jgoguette.twigzolupolus.ca.ycgshifts.Main;
 
 import android.content.Context;
+import android.net.Uri;
 
+import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 
 /**
@@ -11,23 +13,21 @@ import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 public interface MainView {
     Context getContext();
 
-    void setUserProfile(User user);
+    void setProfilePic(Uri uri);
 
-    void setProfileInformation();
-
-    void getProfilePic();
+    void onProfileSuccessfullyRetrieved(User user);
 
     void showProgress();
 
     void hideProgress();
-
-    void onProfileSetComplete();
 
     void navigateToLogin();
 
     void navigateToHome();
 
     void navigateToMessages();
+    void navigateToReadMessage(Message message);
+    void navigateToReadShiftTradeMessage(Message message);
 
     void navigateToSendBlast();
 

@@ -22,6 +22,10 @@ public class SchedulePresenterImpl implements SchedulePresenter, ScheduleInterac
 
     @Override
     public void getSchedule() {
+        if (scheduleView != null) {
+            scheduleView.showProgress();
+        }
+
         scheduleInteractor.getSchedule();
     }
 
@@ -31,8 +35,9 @@ public class SchedulePresenterImpl implements SchedulePresenter, ScheduleInterac
     }
 
     @Override
-    public void onScheduleLoaded(ArrayList<Shift> shifts) {
-        scheduleView.onScheduleLoaded(shifts);
+    public void onScheduleLoaded(ArrayList<Shift> shifts, int hour) {
+        scheduleView.onScheduleLoaded(shifts, hour);
+        scheduleView.hideProgress();
     }
 
     @Override

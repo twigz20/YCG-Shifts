@@ -1,6 +1,7 @@
 package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -50,6 +51,8 @@ public class ScheduleFragment extends Fragment
         implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener,
         WeekView.EmptyViewLongPressListener, ScheduleView, ShiftTradeDialogFragment.ScheduleMessageDialogFragmentEvents{
 
+    private final int NULL_HOUR = -1;
+    private final int DEFAULT_HOUR = 6;
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
     private static final int TYPE_WEEK_VIEW = 3;
@@ -61,6 +64,8 @@ public class ScheduleFragment extends Fragment
     Message message = new Message();
 
     private SchedulePresenter presenter;
+
+    private ProgressDialog progressDialog;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -85,8 +90,8 @@ public class ScheduleFragment extends Fragment
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) view.findViewById(R.id.weekView);
 
-        // Display Calendar from 6am
-        mWeekView.goToHour(6);
+        // Default hour to go to when opened
+        mWeekView.goToHour(DEFAULT_HOUR);
 
         // Show a toast message about the touched event.
         mWeekView.setOnEventClickListener(this);
@@ -114,7 +119,7 @@ public class ScheduleFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        presenter.getSchedule();
+        getSchedule();
     }
 
     private void setupDateTimeInterpreter(final boolean shortDate) {
@@ -315,7 +320,7 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void getSchedule() {
-
+        presenter.getSchedule();
     }
 
     @Override
@@ -324,10 +329,16 @@ public class ScheduleFragment extends Fragment
     }
 
     @Override
-    public void onScheduleLoaded(ArrayList<Shift> shifts) {
+    public void onScheduleLoaded(ArrayList<Shift> shifts, int hour) {
         this.shifts = shifts;
-        Toast.makeText(context, "Schedule Updated", Toast.LENGTH_SHORT).show();
+
+        if(hour != NULL_HOUR)
+            mWeekView.goToHour(hour);
+        else
+            mWeekView.goToHour(DEFAULT_HOUR);
         mWeekView.notifyDatasetChanged();
+
+        Toast.makeText(context, "Schedule Updated", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -354,5 +365,23 @@ public class ScheduleFragment extends Fragment
     public void onMessageEntered(String msg) {
         message.setMessage(msg);
         sendShiftTradeRequest();
+    }
+
+    @Override
+    public void showProgress() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage(getString(R.string.schedule_progressDialog_message));
+            progressDialog.setIndeterminate(true);
+        }
+
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 }

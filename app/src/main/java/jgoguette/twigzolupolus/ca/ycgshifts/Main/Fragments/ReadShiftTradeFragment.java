@@ -28,6 +28,7 @@ import java.util.Locale;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradePresenter;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradePresenterImpl;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradeView;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.MainActivity;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 import jgoguette.twigzolupolus.ca.ycgshifts.R;
@@ -91,6 +92,8 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_read_shift_trade, container, false);
+
+        setTitle();
 
         TextView sender = (TextView)view.findViewById(R.id.shiftSwapName);
         sender.setText(message.getSender());
@@ -199,6 +202,11 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
         }
 
         return d;
+    }
+
+    @Override
+    public void setTitle() {
+        ((MainActivity)context).toolbar.setTitle(((MainActivity)context).user.getName());
     }
 
 }

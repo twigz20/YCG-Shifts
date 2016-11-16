@@ -16,9 +16,13 @@ public interface ScheduleView {
     void getSchedule();
     void sendShiftTradeRequest();
 
-    void onScheduleLoaded(ArrayList<Shift> shifts);
+    void onScheduleLoaded(ArrayList<Shift> shifts, int hour);
     void onTradeRequestSent(String message);
     void onTradeRequestNotSent(String message);
 
     void showMessageDialog(String title, String message);
+
+    void showProgress();
+
+    void hideProgress();
 }
