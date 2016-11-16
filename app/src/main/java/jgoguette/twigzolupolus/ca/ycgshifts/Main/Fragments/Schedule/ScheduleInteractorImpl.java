@@ -34,19 +34,21 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
     private Context context;
     private onScheduleLoadedListener scheduleLoadedListener;
     private onShiftTradeRequestSentListener tradeRequestSentListener;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
 
     public ScheduleInteractorImpl(Context context, onShiftTradeRequestSentListener tradeRequestSentListener, onScheduleLoadedListener scheduleLoadedListener) {
         this.context = context;
         this.scheduleLoadedListener = scheduleLoadedListener;
         this.tradeRequestSentListener = tradeRequestSentListener;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
 
     @Override
     public void getSchedule() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
         databaseReference.child(context.getString(R.string.shifts_table))
                 .child(firebaseAuth.getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -85,9 +87,7 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
 
     @Override
     public void sendShiftTradeRequest(final Message message) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         final String uID = firebaseAuth.getCurrentUser().getUid();
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child(context.getString(R.string.users_table))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,9 +106,10 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
                         }
                     }
 
+                    final String key = UUID.randomUUID().toString();
                     for(User user: users) {
                         if(user.getDepartment().equals(currentUser.getDepartment())) {
-                            sendShiftTradeRequest(message, currentUser, user);
+                            sendShiftTradeRequest(key, message, currentUser, user);
                         }
                     }
                 } catch(DatabaseException e) {
@@ -126,10 +127,7 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
     }
 
     @Override
-    public void sendShiftTradeRequest(final Message message, User currentUser, User otherUser) {
-        String key = UUID.randomUUID().toString();
-
-        Message msg = new Message(message);
+    public void sendShiftTradeRequest(final String key, final Message message, User currentUser, User otherUser) {
         message.setReceiver(otherUser.getName());
         message.setSender(currentUser.getName());
         message.setSubject("Shift Trade Request");
@@ -166,11 +164,9 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
 
     @Override
     public void setTradeRequestSent(String key) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child(context.getString(R.string.shifts_table))
-                        .child(firebaseAuth.getCurrentUser().getUid()).child(key)
-                        .child("shiftTradeRequestSent")
-                        .setValue(true);
+                    .child(firebaseAuth.getCurrentUser().getUid()).child(key)
+                    .child("shiftTradeRequestSent")
+                    .setValue(true);
     }
 }

@@ -9,7 +9,7 @@ import android.net.Uri;
 
 public interface ReadShiftTradeView {
     void onShiftTradedSuccess();
-    void onShiftTradeReject();
+    void onShiftTradedFailed();
     void loadProfilePic();
     Context getContext();
 

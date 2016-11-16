@@ -23,7 +23,7 @@ public interface ScheduleInteractor {
 
     void getSchedule();
     void sendShiftTradeRequest(Message message);
-    void sendShiftTradeRequest(Message message, User currentUser, User otherUser);
+    void sendShiftTradeRequest(String key, Message message, User currentUser, User otherUser);
 
     void setTradeRequestSent(String key);
 }

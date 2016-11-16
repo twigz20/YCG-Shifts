@@ -120,7 +120,7 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.acceptShiftTrade();
+                presenter.acceptShiftTrade(message.getKey(), message.getShift());
             }
         });
 
@@ -128,7 +128,8 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.rejectShiftTrade();
+                presenter.rejectShiftTrade(message.getKey());
+                navigateBackToMessages();
             }
         });
 
@@ -143,8 +144,8 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
     }
 
     @Override
-    public void onShiftTradeReject() {
-        navigateBackToMessages();
+    public void onShiftTradedFailed() {
+
     }
 
     @Override

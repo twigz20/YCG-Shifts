@@ -1,8 +1,11 @@
 package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendMessage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,18 +32,22 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
     private onMessageSentListener listener;
     private onFetchUsernamesListener fetchUsernamesListener;
 
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+
     public SendMessageInteractorImpl(Context context, onMessageSentListener listener, onFetchUsernamesListener fetchUsernamesListener) {
         this.context = context;
         this.listener = listener;
         this.fetchUsernamesListener = fetchUsernamesListener;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
     public void sendMessage(final String to, final String subject, final String message) {
 
         if(isParamsValid(to, subject, message)) {
-            final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 //onDataChange is called every time the name of the User changes in your Firebase Database
                 @Override
@@ -81,8 +88,6 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
 
     @Override
     public void getUserNames() {
-        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child(context.getString(R.string.users_table)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -244,11 +249,15 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
 
         message.setTimeStamp(tsTime2);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference newRef = databaseReference.child(context.getString(R.string.messages_table)).child(firebaseId).push();
         String key = newRef.getKey();
         message.setKey(key);
-        newRef.setValue(message);
+        newRef.setValue(message).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                listener.onSuccess();
+            }
+        });
         /*databaseReference.child("notificationsRequests").child(firebaseId).child(key).setValue(message);*/
     }
 }

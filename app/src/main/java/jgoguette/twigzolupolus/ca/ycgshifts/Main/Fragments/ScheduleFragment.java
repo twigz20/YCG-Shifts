@@ -326,7 +326,7 @@ public class ScheduleFragment extends Fragment
     @Override
     public void onScheduleLoaded(ArrayList<Shift> shifts) {
         this.shifts = shifts;
-        Toast.makeText(getActivity(), "Schedule Updated", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Schedule Updated", Toast.LENGTH_SHORT).show();
         mWeekView.notifyDatasetChanged();
     }
 

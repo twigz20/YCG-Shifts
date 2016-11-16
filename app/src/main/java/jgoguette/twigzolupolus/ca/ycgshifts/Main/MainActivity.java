@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void navigateToHome() {
-        ((MainActivity)context).navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setCheckedItem(R.id.nav_home);
         // Initial Fragment
         FeedsFragment fragment = new FeedsFragment();
         FragmentManager manager = getSupportFragmentManager();

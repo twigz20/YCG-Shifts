@@ -2,6 +2,8 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade;
 
 import android.net.Uri;
 
+import jgoguette.twigzolupolus.ca.ycgshifts.Model.Shift;
+
 /**
  * Created by jerry on 2016-11-15.
  */
@@ -24,13 +26,13 @@ public class ReadShiftTradePresenterImpl implements ReadShiftTradePresenter,
     }
 
     @Override
-    public void acceptShiftTrade() {
-
+    public void acceptShiftTrade(String messageKey, Shift shift) {
+        readShiftTradeInteractor.acceptShiftTrade(messageKey, shift);
     }
 
     @Override
-    public void rejectShiftTrade() {
-
+    public void rejectShiftTrade(String messageKey) {
+        readShiftTradeInteractor.rejectShiftTrade(messageKey);
     }
 
     @Override
@@ -40,17 +42,21 @@ public class ReadShiftTradePresenterImpl implements ReadShiftTradePresenter,
 
     @Override
     public void onDestroy() {
-
+        readShiftTradeView = null;
     }
 
     @Override
     public void onShiftTradeSuccessful() {
-
+        if(readShiftTradeView != null) {
+            readShiftTradeView.onShiftTradedSuccess();
+        }
     }
 
     @Override
     public void onShiftTradeFailed() {
-
+        if(readShiftTradeView != null) {
+            readShiftTradeView.onShiftTradedFailed();
+        }
     }
 
     @Override
@@ -62,6 +68,8 @@ public class ReadShiftTradePresenterImpl implements ReadShiftTradePresenter,
 
     @Override
     public void onProfilePicLoadedFailure() {
-
+        if(readShiftTradeView != null) {
+            readShiftTradeView.onProfilePicLoadedFailure();
+        }
     }
 }

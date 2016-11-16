@@ -21,19 +21,24 @@ import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 public class SendBlastInteractorImpl implements SendBlastInteractor{
 
-    Context context;
-    OnBlastSentListener listener;
+    private Context context;
+    private OnBlastSentListener listener;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+
 
     public SendBlastInteractorImpl(Context context, SendBlastInteractor.OnBlastSentListener listener) {
         this.context = context;
         this.listener = listener;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
     public void sendBlast(String name, String message) {
         if(isMessageValid(message)) {
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            String uid = firebaseAuth.getCurrentUser().getUid();
 
             // Get Current TimeStamp
             java.util.Date date= new java.util.Date();

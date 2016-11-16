@@ -22,19 +22,21 @@ import jgoguette.twigzolupolus.ca.ycgshifts.R;
  */
 
 public class MessageInteractorImpl implements MessageInteractor {
-    Context context;
-    onMessagesLoadedListener listener;
+    private Context context;
+    private onMessagesLoadedListener listener;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
 
     public MessageInteractorImpl(Context context, onMessagesLoadedListener listener) {
         this.context = context;
         this.listener = listener;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
     public void loadMessages() {
-        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
         //Referring to the name of the User who has logged in currently and adding a valueChangeListener
         databaseReference.child(context.getString(R.string.messages_table))
                 .child(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
