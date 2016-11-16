@@ -2,15 +2,31 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments;
 
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.joda.time.LocalDateTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradePresenter;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradePresenterImpl;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade.ReadShiftTradeView;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
@@ -25,17 +41,7 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
     private static final String ARG_NOTIFICATION = "Messages";
 
     // TODO: Rename and change types of parameters
-    private Message messages;
-
-    @Override
-    public void setRead() {
-
-    }
-
-    @Override
-    public void loadProfilePic() {
-
-    }
+    private Message message;
 
     public enum Day {
         MON, TUE, WED, THU, FRI, SAT, SUN
@@ -46,6 +52,8 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
     List<User> usersList = new ArrayList<>();
 
     Context context;
+
+    ReadShiftTradePresenter presenter;
 
     public ReadShiftTradeFragment() {
         // Required empty public constructor
@@ -70,8 +78,11 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
+        presenter = new ReadShiftTradePresenterImpl(this);
         if (getArguments() != null) {
-            messages = (Message) getArguments().getSerializable(ARG_NOTIFICATION);
+            message = (Message) getArguments().getSerializable(ARG_NOTIFICATION);
+
+            presenter.setRead(message.getKey());
         }
     }
 
@@ -79,7 +90,85 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_read_shift_trade, container, false);
+        View view = inflater.inflate(R.layout.fragment_read_shift_trade, container, false);
+
+        TextView sender = (TextView)view.findViewById(R.id.shiftSwapName);
+        sender.setText(message.getSender());
+
+        TextView date = (TextView)view.findViewById(R.id.shiftSwapDate);
+        date.setText(message.getDate());
+
+        TextView msg = (TextView)view.findViewById(R.id.shiftSwapMessage);
+        msg.setText(message.getMessage());
+
+        TextView time = (TextView)view.findViewById(R.id.shiftSwapTime);
+        time.setText(message.getTime());
+
+        TextView day = (TextView)view.findViewById(R.id.shiftSwapDay);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy (z)", Locale.CANADA);
+        try {
+            Date d = dateFormat.parse(message.getDate());
+            LocalDateTime localDate = LocalDateTime.fromDateFields(d);
+            day.setText(convertIntToDay(localDate.getDayOfWeek()-1));
+        } catch (ParseException e) {
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        Button accept = (Button)view.findViewById(R.id.shiftSwapAccept);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.acceptShiftTrade();
+            }
+        });
+
+        Button reject = (Button)view.findViewById(R.id.shiftSwapReject);
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.rejectShiftTrade();
+            }
+        });
+
+        loadProfilePic();
+
+        return view;
+    }
+
+    @Override
+    public void onShiftTradedSuccess() {
+        navigateBackToMessages();
+    }
+
+    @Override
+    public void onShiftTradeReject() {
+        navigateBackToMessages();
+    }
+
+    @Override
+    public void loadProfilePic() {
+        presenter.loadProfilePic(message.getShift().getOwner());
+    }
+
+    @Override
+    public void onProfilePicLoadedFailure() {
+
+    }
+
+    @Override
+    public void setProfilePic(Uri uri) {
+        ImageView profilePic = (ImageView) getView().findViewById(R.id.shiftSwapImage);
+        Picasso.with(context)
+                .load(uri)
+                .fit()
+                .into(profilePic);
+    }
+
+    @Override
+    public void navigateBackToMessages() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     public String convertDayToString(Day day) {

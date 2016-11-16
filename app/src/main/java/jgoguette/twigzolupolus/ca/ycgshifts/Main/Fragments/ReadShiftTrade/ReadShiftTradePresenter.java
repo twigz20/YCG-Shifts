@@ -5,9 +5,11 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTrade;
  */
 
 public interface ReadShiftTradePresenter {
-    void setRead();
+    void setRead(String key);
     void acceptShiftTrade();
     void rejectShiftTrade();
+
+    void loadProfilePic(String profilePicOwnerID);
 
     void onDestroy();
 }
