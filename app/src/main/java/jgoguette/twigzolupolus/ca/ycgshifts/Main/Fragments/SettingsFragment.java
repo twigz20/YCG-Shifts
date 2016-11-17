@@ -46,6 +46,6 @@ public class SettingsFragment extends Fragment implements SettingsView {
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(R.string.Settings_Title);
+        ((MainActivity)context).setTitle(R.string.Settings_Title);
     }
 }

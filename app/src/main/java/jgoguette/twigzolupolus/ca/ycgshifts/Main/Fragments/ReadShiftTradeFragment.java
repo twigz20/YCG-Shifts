@@ -206,7 +206,7 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(((MainActivity)context).user.getName());
+        ((MainActivity)context).setTitle(((MainActivity)context).user.getName());
     }
 
 }

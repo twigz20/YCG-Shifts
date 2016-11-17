@@ -315,7 +315,7 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(R.string.Schedule_Title);
+        ((MainActivity)context).setTitle(R.string.Schedule_Title);
     }
 
     @Override

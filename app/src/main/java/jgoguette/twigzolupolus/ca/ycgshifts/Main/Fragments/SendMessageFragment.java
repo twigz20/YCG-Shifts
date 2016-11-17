@@ -123,6 +123,6 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(R.string.Send_Message_Title);
+        ((MainActivity)context).setTitle(R.string.Send_Message_Title);
     }
 }

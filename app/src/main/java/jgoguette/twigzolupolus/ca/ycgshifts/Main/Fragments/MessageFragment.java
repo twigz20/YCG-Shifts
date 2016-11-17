@@ -83,7 +83,7 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(R.string.Messages_Title);
+        ((MainActivity)context).setTitle(R.string.Messages_Title);
     }
 
     @Override
@@ -141,6 +141,7 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
 
         if(messages.get(position).getType().equals(messages.get(position)
                 .convertTypeToString(Message.Type.SHIFT_SWAP_NOTIF))) {
+
             navigateToReadShiftTradeMessage(messages.get(position));
         } else {
             navigateToReadMessage(messages.get(position));

@@ -41,13 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jgoguette.twigzolupolus.ca.ycgshifts.Login.LoginActivity;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.FeedsFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.MessageFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadMessageFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTradeFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ScheduleFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendBlastFragment;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SettingsFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.*;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.NotificationService;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;

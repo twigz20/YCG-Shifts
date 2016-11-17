@@ -32,19 +32,19 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
 
     List<Message> messages = new ArrayList<>();
 
-    private DatabaseReference mFeedRef;
+    private DatabaseReference messageRef;
 
-    public MessageAdapter(List<Message> messages, DatabaseReference mFeedRef,
+    public MessageAdapter(List<Message> messages, DatabaseReference messageRef,
                           ViewHolder.ClickListener clickListener) {
         super();
 
-        this.mFeedRef = mFeedRef;
+        this.messageRef = messageRef;
         this.messages = messages;
         this.clickListener = clickListener;
     }
 
     public void removeItem(int position) {
-        mFeedRef.child(messages.get(position).getKey()).removeValue();
+        messageRef.child(messages.get(position).getKey()).removeValue();
         messages.remove(position);
         notifyItemRemoved(position);
     }
@@ -84,7 +84,7 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
 
     private void removeRange(int positionStart, int itemCount) {
         for (int i = 0; i < itemCount; ++i) {
-            mFeedRef.child(messages.get(positionStart).getKey()).removeValue();
+            messageRef.child(messages.get(positionStart).getKey()).removeValue();
             messages.remove(positionStart);
         }
         notifyItemRangeRemoved(positionStart, itemCount);

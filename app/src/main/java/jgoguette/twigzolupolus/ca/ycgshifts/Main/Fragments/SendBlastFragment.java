@@ -75,7 +75,7 @@ public class SendBlastFragment extends Fragment implements SendBlastView {
 
     @Override
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(R.string.Send_Blast_Title);
+        ((MainActivity)context).setTitle(R.string.Send_Blast_Title);
     }
 
     @Override

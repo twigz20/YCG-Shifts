@@ -102,7 +102,7 @@ public class ReadMessageFragment extends Fragment {
     }
 
     public void setTitle() {
-        ((MainActivity)context).toolbar.setTitle(message.getSubject());
+        ((MainActivity)context).setTitle(message.getSubject());
     }
 
 }
