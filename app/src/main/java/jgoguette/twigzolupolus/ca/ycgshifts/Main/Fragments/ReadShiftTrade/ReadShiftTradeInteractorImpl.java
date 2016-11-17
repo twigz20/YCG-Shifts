@@ -76,6 +76,7 @@ public class ReadShiftTradeInteractorImpl implements ReadShiftTradeInteractor {
                     User user = userSnap.getValue(User.class);
 
                     removeShiftTradeMessage(user.getFirebaseId(), messageKey);
+                    removeShiftTradeNotification(user.getFirebaseId(), messageKey);
                     removeShiftFromPreviousOwner(user.getFirebaseId(), shift.getKey());
                 }
 
@@ -90,7 +91,6 @@ public class ReadShiftTradeInteractorImpl implements ReadShiftTradeInteractor {
         });
     }
 
-
     @Override
     public void rejectShiftTrade(String messageKey) {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -101,6 +101,11 @@ public class ReadShiftTradeInteractorImpl implements ReadShiftTradeInteractor {
 
     private void removeShiftTradeMessage(String firebaseId, String messageKey) {
         databaseReference.child(context.getString(R.string.messages_table)).child(firebaseId)
+                .child(messageKey).removeValue();
+    }
+
+    private void removeShiftTradeNotification(String firebaseId, String messageKey) {
+        databaseReference.child(context.getString(R.string.notifications_requests_table)).child(firebaseId)
                 .child(messageKey).removeValue();
     }
 

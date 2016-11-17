@@ -48,7 +48,7 @@ public class SignUpInteractorImpl implements SignUpInteractor {
             listener.onNameError();
             valid = false;
         }
-        if (TextUtils.isEmpty(department)){
+        if (department.equals(context.getString(R.string.Choose_Department))){
             listener.onDepartmentError();
             valid = false;
         }
@@ -58,6 +58,7 @@ public class SignUpInteractorImpl implements SignUpInteractor {
 
     @Override
     public void addUserToDatabase(User user) {
+        user.setFirebaseId(firebaseAuth.getCurrentUser().getUid());
         databaseReference.child(context.getString(R.string.users_table))
                 .child(firebaseAuth.getCurrentUser().getUid())
                 .setValue(user);

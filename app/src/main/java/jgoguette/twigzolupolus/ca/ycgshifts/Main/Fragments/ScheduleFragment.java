@@ -174,7 +174,7 @@ public class ScheduleFragment extends Fragment
                     endTime.setTime(date);
 
                     WeekViewEvent event = new WeekViewEvent(i + 1, "Busy", startTime, endTime);
-                    event.setColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+                    event.setColor(ContextCompat.getColor(getActivity(),R.color.lightskyblue));
                     events.add(event);
                 }
             } catch (ParseException e) {

@@ -142,7 +142,8 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
 
                     final String key = UUID.randomUUID().toString();
                     for(User user: users) {
-                        if(user.getDepartment().equals(currentUser.getDepartment())) {
+                        if(user.getDepartment().equals(currentUser.getDepartment())  &&
+                                user.getAuthorizationLevel().equals(currentUser.getAuthorizationLevel())) {
                             sendShiftTradeRequest(key, message, currentUser, user);
                         }
                     }

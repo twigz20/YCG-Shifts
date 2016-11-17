@@ -7,7 +7,15 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
     EditText name;
 
     @Bind(R.id.editTextDepartment)
-    EditText department;
+    Spinner department;
 
     private User user;
     private ProgressDialog progressDialog;
@@ -43,6 +51,15 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
         ButterKnife.bind(this);
 
         presenter = new SignUpPresenterImpl(this);
+
+        ArrayList<String> DEPARTMENTS = new ArrayList<>();
+        DEPARTMENTS.add(getString(R.string.Choose_Department));
+        Collections.addAll(DEPARTMENTS, getResources().getStringArray(R.array.departments));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, DEPARTMENTS);
+
+        department.setAdapter(adapter);
     }
 
     @Override protected void onDestroy() {
@@ -61,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
         presenter.signUp(email.getText().toString(),
                 password.getText().toString(),
                 name.getText().toString(),
-                department.getText().toString()
+                department.getSelectedItem().toString()
         );
     }
 
@@ -100,7 +117,22 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
 
     @Override
     public void setDepartmentError() {
-        department.setError(getString(R.string.department_error));
+        View view = department.getSelectedView();
+
+        // Set TextView in Secondary Unit spinner to be in error so that red (!) icon
+        // appears, and then shake control if in error
+        final TextView tvListItem = (TextView)view;
+
+        // Set fake TextView to be in error so that the error message appears
+        final TextView tvInvisibleError = (TextView)findViewById(R.id.tvInvisibleError);
+
+        tvListItem.setError("");
+        tvListItem.requestFocus();
+
+        // Shake the spinner to highlight that current selection
+        // is invalid
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        department.startAnimation(shake);
     }
 
     @Override
@@ -128,7 +160,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
         user = new User();
         user.setName(name.getText().toString());
         user.setEmail(email.getText().toString());
-        user.setDepartment(department.getText().toString());
+        user.setDepartment(department.getSelectedItem().toString());
         user.setAuthorizationLevel(getString(R.string.low_level_authorization));
     }
 

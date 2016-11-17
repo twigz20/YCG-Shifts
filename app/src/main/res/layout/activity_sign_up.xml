@@ -40,13 +40,27 @@
             android:hint="Enter Name"
             android:inputType="textPersonName" />
 
-        <EditText
+        <Spinner
             android:id="@+id/editTextDepartment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:hint="Enter Department"
-            android:inputType="text"/>
+            android:paddingBottom="0dp"
+            android:layout_marginBottom="0dp"/>
+
+        <!-- Fake TextView to use to set in an error state to allow an error to be shown for the TextView -->
+        <TextView
+            android:id="@+id/tvInvisibleError"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignRight="@+id/spnMySpinner"
+            android:layout_alignBottom="@+id/spnMySpinner"
+            android:layout_marginTop="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="50dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
 
         <Button
             android:id="@+id/buttonSignup"

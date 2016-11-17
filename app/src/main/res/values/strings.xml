@@ -10,7 +10,7 @@
     <string name="email_error">Email cannot be empty</string>
     <string name="password_error">Password cannot be empty</string>
     <string name="name_error">Name cannot be empty</string>
-    <string name="department_error">Department cannot be empty</string>
+    <string name="department_error">Must Choose a Department</string>
     <string name="credential_error_title">Invalid Login Credentials!</string>
     <string name="credential_error_message">Please input valid email address and password.</string>
     <string name="user_exists_error_title">User Already Registered!</string>
@@ -91,4 +91,8 @@
     <string name="message_Error_message">Cannot send empty message.</string>
     <string name="subject_Error_message">Cannot send message without subject.</string>
     <string name="to_Error_message">Must have at least 1 person receiving this message.</string>
+    <string name="notifications_requests_table">notificationsRequests</string>
+
+    <string name="Department">Department</string>
+    <string name="Choose_Department">Choose a Department</string>
 </resources>

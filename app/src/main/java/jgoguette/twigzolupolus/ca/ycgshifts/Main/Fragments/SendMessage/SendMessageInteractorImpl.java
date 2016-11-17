@@ -102,6 +102,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                             userNames.add(user.getName());
                         }
                     }
+
                     Collections.addAll(userNames, context.getResources().getStringArray(R.array.departments));
                     Collections.addAll(userNames, context.getResources().getStringArray(R.array.predefinedSendTargets));
 
