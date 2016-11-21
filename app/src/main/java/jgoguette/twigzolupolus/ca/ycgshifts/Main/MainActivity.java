@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -41,7 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jgoguette.twigzolupolus.ca.ycgshifts.Login.LoginActivity;
-import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.*;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.FeedsFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.MessageFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadMessageFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTradeFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ScheduleFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendBlastFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SettingsFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Services.NotificationService;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
@@ -204,7 +211,11 @@ public class MainActivity extends AppCompatActivity
                 super.onDrawerClosed(drawerView);
                 InputMethodManager inputMethodManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                View view = getCurrentFocus();
+                if(view != null) {
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
 
             @Override
@@ -213,15 +224,43 @@ public class MainActivity extends AppCompatActivity
                 super.onDrawerOpened(drawerView);
                 InputMethodManager inputMethodManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+                View view = getCurrentFocus();
+                if(view != null) {
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         };
 
         drawer.addDrawerListener(toggle);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back button
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onBackPressed();
+                        }
+                    });
+                } else {
+                    //show hamburger
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    toggle.syncState();
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            drawer.openDrawer(GravityCompat.START);
+                        }
+                    });
+                }
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -230,7 +269,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -440,6 +479,7 @@ public class MainActivity extends AppCompatActivity
     private void openImageIntent() {
         // Determine Uri of camera image to save.
         final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "photos" + File.separator);
+        //noinspection ResultOfMethodCallIgnored
         root.mkdirs();
 
         final String fname = user.getFirebaseId() + ".jpg";
@@ -447,7 +487,7 @@ public class MainActivity extends AppCompatActivity
         outputFileUri = Uri.fromFile(sdImageMainDirectory);
 
         // Camera.
-        final List<Intent> cameraIntents = new ArrayList<Intent>();
+        final List<Intent> cameraIntents = new ArrayList<>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         final PackageManager packageManager = getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
@@ -466,6 +506,7 @@ public class MainActivity extends AppCompatActivity
         try {
             // Create directory if it does not exist.
             if (!dir.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 dir.mkdir();
             }
             boolean created = file.createNewFile();
@@ -500,18 +541,19 @@ public class MainActivity extends AppCompatActivity
                 isCamera = true;
             } else {
                 final String action = data.getAction();
-                if (action == null) {
+                isCamera = action != null && action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                /*if (action == null) {
                     isCamera = false;
                 } else {
                     isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                }
+                }*/
             }
 
             Uri selectedImageUri;
             if (isCamera) {
                 selectedImageUri = outputFileUri;
             } else {
-                selectedImageUri = data == null ? null : data.getData();
+                selectedImageUri = data.getData();
             }
 
             if (selectedImageUri != null) {
@@ -529,7 +571,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
@@ -541,7 +583,6 @@ public class MainActivity extends AppCompatActivity
                     // functionality that depends on this permission.
                     Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }

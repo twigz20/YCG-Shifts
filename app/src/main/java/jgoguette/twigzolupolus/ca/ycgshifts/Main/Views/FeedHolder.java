@@ -19,35 +19,37 @@ import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 /**
  * Created by jerry on 2016-11-14.
+ *
+ * FeedHolder
  */
 
 public class FeedHolder extends RecyclerView.ViewHolder {
-    private View mView;
+    private View view;
 
     public FeedHolder(View itemView) {
         super(itemView);
-        mView = itemView;
+        view = itemView;
     }
 
     public void setName(String name) {
-        TextView field = (TextView) mView.findViewById(R.id.tvData);
+        TextView field = (TextView) view.findViewById(R.id.tvData);
         field.setText(name);
     }
 
     public void setStatus(String status) {
-        TextView field = (TextView) mView.findViewById(R.id.txtStatusMsg);
+        TextView field = (TextView) view.findViewById(R.id.txtStatusMsg);
         field.setText(status);
     }
 
     public void setTimeStamp(Long timeStamp) {
-        TextView field = (TextView) mView.findViewById(R.id.timestamp);
+        TextView field = (TextView) view.findViewById(R.id.timestamp);
         CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
                 timeStamp,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         field.setText(timeAgo);
     }
 
-    public void setProfilePic(final Context context, String firebaseId) {
+    public void setProfilePic(final Context context, final String firebaseId) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(firebaseId
                 + context.getString(R.string.profilePicPath));
 
@@ -55,13 +57,15 @@ public class FeedHolder extends RecyclerView.ViewHolder {
             @Override
             public void onSuccess(Uri uri) {
                 // Pass it to Picasso to download, show in ImageView and caching
-                ImageView profilePic = (ImageView) mView.findViewById(R.id.profilePic);
+                ImageView profilePic = (ImageView) view.findViewById(R.id.profilePic);
                 Picasso.with(context).load(uri.toString()).fit().into(profilePic);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                ImageView profilePic = (ImageView) view.findViewById(R.id.profilePic);
+                profilePic.setImageResource(R.drawable.no_picture);
             }
         });
     }
