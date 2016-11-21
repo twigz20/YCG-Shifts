@@ -20,7 +20,6 @@ public interface ReadShiftTradeInteractor {
         void onProfilePicLoadedFailure();
     }
 
-    void setRead(String key);
     void loadProfilePic(String profilePicOwnerID);
 
     void acceptShiftTrade(String messageKey, Shift shift);

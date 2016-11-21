@@ -90,6 +90,100 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
         notifyItemRangeRemoved(positionStart, itemCount);
     }
 
+    public void markItemRead(int position) {
+        messageRef.child(messages.get(position).getKey()).child("read").setValue(true);
+        messages.get(position).setRead(true);
+        notifyItemChanged(position);
+    }
+
+    public void markItemsRead(List<Integer> positions) {
+        // Reverse-sort the list
+        Collections.sort(positions, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer lhs, Integer rhs) {
+                return rhs - lhs;
+            }
+        });
+
+        // Split the list in ranges
+        while (!positions.isEmpty()) {
+            if (positions.size() == 1) {
+                markItemRead(positions.get(0));
+                positions.remove(0);
+            } else {
+                int count = 1;
+                while (positions.size() > count && positions.get(count).equals(positions.get(count - 1) - 1)) {
+                    ++count;
+                }
+
+                if (count == 1) {
+                    markItemRead(positions.get(0));
+                } else {
+                    markItemReadRange(positions.get(count - 1), count);
+                }
+
+                for (int i = 0; i < count; ++i) {
+                    positions.remove(0);
+                }
+            }
+        }
+    }
+
+    private void markItemReadRange(int positionStart, int itemCount) {
+        for (int i = positionStart; i < itemCount; ++i) {
+            messageRef.child(messages.get(i).getKey()).child("read").setValue(true);
+            messages.get(i).setRead(true);
+        }
+        notifyItemRangeChanged(positionStart, itemCount);
+    }
+
+    public void markItemUnread(int position) {
+        messageRef.child(messages.get(position).getKey()).child("read").setValue(false);
+        messages.get(position).setRead(false);
+        notifyItemChanged(position);
+    }
+
+    public void markItemsUnread(List<Integer> positions) {
+        // Reverse-sort the list
+        Collections.sort(positions, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer lhs, Integer rhs) {
+                return rhs - lhs;
+            }
+        });
+
+        // Split the list in ranges
+        while (!positions.isEmpty()) {
+            if (positions.size() == 1) {
+                markItemUnread(positions.get(0));
+                positions.remove(0);
+            } else {
+                int count = 1;
+                while (positions.size() > count && positions.get(count).equals(positions.get(count - 1) - 1)) {
+                    ++count;
+                }
+
+                if (count == 1) {
+                    markItemUnread(positions.get(0));
+                } else {
+                    markItemUnreadRange(positions.get(count - 1), count);
+                }
+
+                for (int i = 0; i < count; ++i) {
+                    positions.remove(0);
+                }
+            }
+        }
+    }
+
+    private void markItemUnreadRange(int positionStart, int itemCount) {
+        for (int i = positionStart; i < itemCount; ++i) {
+            messageRef.child(messages.get(i).getKey()).child("read").setValue(false);
+            messages.get(i).setRead(false);
+        }
+        notifyItemRangeChanged(positionStart, itemCount);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final int layout = viewType == TYPE_READ ? R.layout.message_read : R.layout.message_unread;

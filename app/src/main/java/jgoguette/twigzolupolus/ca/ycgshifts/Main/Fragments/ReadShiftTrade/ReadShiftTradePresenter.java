@@ -7,7 +7,6 @@ import jgoguette.twigzolupolus.ca.ycgshifts.Model.Shift;
  */
 
 public interface ReadShiftTradePresenter {
-    void setRead(String key);
     void acceptShiftTrade(String messageKey, Shift shift);
     void rejectShiftTrade(String messageKey);
 

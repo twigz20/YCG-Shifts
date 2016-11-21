@@ -82,8 +82,6 @@ public class ReadShiftTradeFragment extends Fragment implements ReadShiftTradeVi
         presenter = new ReadShiftTradePresenterImpl(this);
         if (getArguments() != null) {
             message = (Message) getArguments().getSerializable(ARG_NOTIFICATION);
-
-            presenter.setRead(message.getKey());
         }
     }
 

@@ -63,8 +63,7 @@ class SendMessageInteractorImpl implements SendMessageInteractor {
                         String sender = null;
                         for (DataSnapshot usersSnapShot : dataSnapshot.getChildren()) {
                             User user = usersSnapShot.getValue(User.class);
-                            if(firebaseAuth
-                                    .getCurrentUser() != null) {
+                            if(firebaseAuth.getCurrentUser() != null) {
                                 String firebaseUID = firebaseAuth
                                         .getCurrentUser()
                                         .getUid();
@@ -101,8 +100,7 @@ class SendMessageInteractorImpl implements SendMessageInteractor {
                     ArrayList<String> userNames = new ArrayList<>();
                     for (DataSnapshot usersSnapShot : dataSnapshot.getChildren()) {
                         User user = usersSnapShot.getValue(User.class);
-                        if(firebaseAuth
-                                .getCurrentUser() != null) {
+                        if(firebaseAuth.getCurrentUser() != null) {
                             String firebaseUID = firebaseAuth
                                     .getCurrentUser()
                                     .getUid();

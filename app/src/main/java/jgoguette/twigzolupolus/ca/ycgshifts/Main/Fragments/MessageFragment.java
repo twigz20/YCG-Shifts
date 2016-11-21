@@ -139,6 +139,8 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
             return;
         }
 
+        messageAdapter.markItemRead(position);
+
         if(messages.get(position).getType().equals(messages.get(position)
                 .convertTypeToString(Message.Type.SHIFT_SWAP_NOTIF))) {
 
@@ -200,6 +202,16 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
             switch (item.getItemId()) {
                 case R.id.menu_delete_items:
                     messageAdapter.removeItems(messageAdapter.getSelectedItems());
+                    mode.finish();
+                    return true;
+
+                case R.id.menu_mark_read:
+                    messageAdapter.markItemsRead(messageAdapter.getSelectedItems());
+                    mode.finish();
+                    return true;
+
+                case R.id.menu_mark_unread:
+                    messageAdapter.markItemsUnread(messageAdapter.getSelectedItems());
                     mode.finish();
                     return true;
 

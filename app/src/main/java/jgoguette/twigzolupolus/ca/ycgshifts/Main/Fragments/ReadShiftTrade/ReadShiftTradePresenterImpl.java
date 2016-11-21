@@ -21,11 +21,6 @@ public class ReadShiftTradePresenterImpl implements ReadShiftTradePresenter,
     }
 
     @Override
-    public void setRead(String key) {
-        readShiftTradeInteractor.setRead(key);
-    }
-
-    @Override
     public void acceptShiftTrade(String messageKey, Shift shift) {
         readShiftTradeInteractor.acceptShiftTrade(messageKey, shift);
     }

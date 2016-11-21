@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_delete_items"
         android:title="delete_items"
         android:icon="@drawable/ic_delete_forever_white_36dp"
+        />
+
+    <item
+        android:id="@+id/menu_mark_read"
+        android:title="mark read"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/menu_mark_unread"
+        android:title="mark unread"
+        app:showAsAction="never"
         />
 </menu>

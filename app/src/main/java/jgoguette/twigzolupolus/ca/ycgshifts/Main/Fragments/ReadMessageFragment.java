@@ -10,10 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.MainActivity;
 import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
 import jgoguette.twigzolupolus.ca.ycgshifts.R;
@@ -68,16 +64,6 @@ public class ReadMessageFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_read_message, container, false);
 
         setTitle();
-
-        message.setRead(true);
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference messagesReference =
-                FirebaseDatabase.getInstance()
-                        .getReference()
-                        .child(context.getString(R.string.messages_table));
-
-        messagesReference.child(firebaseAuth.getCurrentUser().getUid())
-                .child(message.getKey()).child("read").setValue(true);
 
         ((MainActivity)context).setTitle(message.getSubject());
 

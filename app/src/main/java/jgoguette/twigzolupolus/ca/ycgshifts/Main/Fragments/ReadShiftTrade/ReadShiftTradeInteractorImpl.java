@@ -42,14 +42,6 @@ public class ReadShiftTradeInteractorImpl implements ReadShiftTradeInteractor {
     }
 
     @Override
-    public void setRead(String key) {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child(context.getString(R.string.messages_table))
-                .child(firebaseAuth.getCurrentUser().getUid())
-                .child(key).child("read").setValue(true);
-    }
-
-    @Override
     public void loadProfilePic(String profilePicOwnerID) {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(profilePicOwnerID
                 + context.getString(R.string.profilePicPath));
