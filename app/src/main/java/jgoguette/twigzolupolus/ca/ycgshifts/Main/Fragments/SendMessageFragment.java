@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -61,8 +63,8 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                subject = (EditText)getView().findViewById(R.id.editTextSubject);
-                message = (EditText)getView().findViewById(R.id.etStatusMessage);
+                subject = (EditText)view.findViewById(R.id.editTextSubject);
+                message = (EditText)view.findViewById(R.id.etStatusMessage);
                 presenter.sendMessage(to.getText().toString(),subject.getText().toString(), message.getText().toString());
             }
         });
@@ -71,6 +73,7 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard();
                 navigateBackToMessages();
             }
         });
@@ -99,7 +102,7 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
 
     @Override
     public void onFailure() {
-
+        Toast.makeText(context,"Failed to deliver message", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -114,7 +117,7 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
 
     @Override
     public void onUserNamesFetchedSuccessful(ArrayList<String> userNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, userNames);
 
         to.setAdapter(adapter);
@@ -124,5 +127,14 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
     @Override
     public void setTitle() {
         ((MainActivity)context).setTitle(R.string.Send_Message_Title);
+    }
+
+    @Override
+    public void hideKeyboard() {
+        View view = getView();
+        if(view != null) {
+            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        }
     }
 }

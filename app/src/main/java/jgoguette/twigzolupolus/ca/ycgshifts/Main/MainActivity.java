@@ -94,6 +94,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        // Hide Keyboard
+        View view = getCurrentFocus();
+        if(view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager)
+                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
         if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
         } else if (drawer.isDrawerOpen(GravityCompat.START)) {

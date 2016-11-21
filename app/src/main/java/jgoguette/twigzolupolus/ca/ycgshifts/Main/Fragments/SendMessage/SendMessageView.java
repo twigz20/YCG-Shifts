@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Created by jerry on 2016-11-15.
+ *
+ * Send Message
  */
 
 public interface SendMessageView {
@@ -28,4 +30,6 @@ public interface SendMessageView {
     void onUserNamesFetchedSuccessful(ArrayList<String> userNames);
 
     void setTitle();
+
+    void hideKeyboard();
 }

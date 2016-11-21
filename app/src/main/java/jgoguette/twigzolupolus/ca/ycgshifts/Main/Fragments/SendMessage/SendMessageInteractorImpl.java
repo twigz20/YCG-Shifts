@@ -24,9 +24,11 @@ import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 /**
  * Created by jerry on 2016-11-15.
+ *
+ * SendMessagePresenter
  */
 
-public class SendMessageInteractorImpl implements SendMessageInteractor {
+class SendMessageInteractorImpl implements SendMessageInteractor {
 
     private Context context;
     private onMessageSentListener listener;
@@ -35,7 +37,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
-    public SendMessageInteractorImpl(Context context, onMessageSentListener listener, onFetchUsernamesListener fetchUsernamesListener) {
+    SendMessageInteractorImpl(Context context, onMessageSentListener listener, onFetchUsernamesListener fetchUsernamesListener) {
         this.context = context;
         this.listener = listener;
         this.fetchUsernamesListener = fetchUsernamesListener;
@@ -58,17 +60,21 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
 
                     try {
                         ArrayList<User> users = new ArrayList<>();
-                        String sender = new String();
+                        String sender = null;
                         for (DataSnapshot usersSnapShot : dataSnapshot.getChildren()) {
                             User user = usersSnapShot.getValue(User.class);
-                            if (!user.getFirebaseId().equals(firebaseAuth
-                                    .getCurrentUser()
-                                    .getUid())) {
-
-                                users.add(user);
-                            } else {
-                                sender = user.getName();
+                            if(firebaseAuth
+                                    .getCurrentUser() != null) {
+                                String firebaseUID = firebaseAuth
+                                        .getCurrentUser()
+                                        .getUid();
+                                if (!firebaseUID.isEmpty() && !user.getFirebaseId().equals(firebaseUID)) {
+                                    users.add(user);
+                                } else {
+                                    sender = user.getName();
+                                }
                             }
+
                         }
 
                         sendMessage(users, sender, to, subject, message);
@@ -95,11 +101,14 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                     ArrayList<String> userNames = new ArrayList<>();
                     for (DataSnapshot usersSnapShot : dataSnapshot.getChildren()) {
                         User user = usersSnapShot.getValue(User.class);
-                        if(!user.getFirebaseId().equals(firebaseAuth
-                                .getCurrentUser()
-                                .getUid())) {
-
-                            userNames.add(user.getName());
+                        if(firebaseAuth
+                                .getCurrentUser() != null) {
+                            String firebaseUID = firebaseAuth
+                                    .getCurrentUser()
+                                    .getUid();
+                            if (!firebaseUID.isEmpty() && !user.getFirebaseId().equals(firebaseUID)) {
+                                userNames.add(user.getName());
+                            }
                         }
                     }
 
@@ -141,7 +150,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
 
     @Override
     public void sendMessage(ArrayList<User> users, String sender, String to, String subject, String message) {
-
+        Boolean messageSent = false;
         String toString = to.substring(0, to.length()-2);
         String[] departments = context.getResources().getStringArray(R.array.departments);
         // Mass send to users of various departments
@@ -149,6 +158,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
             if(toString.trim().equals(dptmt.trim())) {
                 for(User user : users) {
                     if(user.getDepartment().contains(dptmt)) {
+                        messageSent = true;
                         createNotification(sender, user.getFirebaseId(),user.getName(),
                                 subject, message);
                     }
@@ -162,6 +172,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
             if(toString.trim().equals(target)) {
                 if(target.contains("All")) {
                     for(User user : users) {
+                        messageSent = true;
                         createNotification(sender, user.getFirebaseId(),user.getName(),
                                 subject, message);
                     }
@@ -180,6 +191,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                         if(user.getAuthorizationLevel()
                                 .contains(context.getResources().getString(R.string.manager))) {
                             if (user.getDepartment().contains("Produce")) {
+                                messageSent = true;
                                 createNotification(sender, user.getFirebaseId(), user.getName(),
                                         subject, message);
                             }
@@ -191,6 +203,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                         if(user.getAuthorizationLevel()
                                 .contains(context.getResources().getString(R.string.manager))) {
                             if (user.getDepartment().contains("Grocery")) {
+                                messageSent = true;
                                 createNotification(sender, user.getFirebaseId(), user.getName(),
                                         subject, message);
                             }
@@ -202,6 +215,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                         if(user.getAuthorizationLevel()
                                 .contains(context.getResources().getString(R.string.manager))) {
                             if (user.getDepartment().contains("Deli")) {
+                                messageSent = true;
                                 createNotification(sender, user.getFirebaseId(), user.getName(),
                                         subject, message);
                             }
@@ -213,6 +227,7 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
                         if(user.getAuthorizationLevel()
                                 .contains(context.getResources().getString(R.string.manager))) {
                             if (user.getDepartment().contains("Cash")) {
+                                messageSent = true;
                                 createNotification(sender, user.getFirebaseId(), user.getName(),
                                         subject, message);
                             }
@@ -225,11 +240,15 @@ public class SendMessageInteractorImpl implements SendMessageInteractor {
         // Send to only Users listed
         for(User user : users) {
             if(toString.trim().equals(user.getName())) {
+                messageSent = true;
                 createNotification(sender, user.getFirebaseId(),user.getName(),
                         subject, message);
             }
         }
 
+        if(!messageSent) {
+            listener.onFailure();
+        }
     }
 
     private void createNotification(String sender, String firebaseId, String receiver, String subject, String msg) {
