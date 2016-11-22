@@ -253,11 +253,8 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
 
         @Override
         public boolean onLongClick(View v) {
-            if (listener != null) {
-                return listener.onItemLongClicked(getLayoutPosition());
-            }
+            return listener != null && listener.onItemLongClicked(getLayoutPosition());
 
-            return false;
         }
 
         public interface ClickListener {

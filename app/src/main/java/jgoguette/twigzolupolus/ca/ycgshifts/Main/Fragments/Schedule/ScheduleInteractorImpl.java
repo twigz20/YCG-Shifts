@@ -43,8 +43,6 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
-    private final int NULL_HOUR = -1;
-
     public ScheduleInteractorImpl(Context context, onShiftTradeRequestSentListener tradeRequestSentListener, onScheduleLoadedListener scheduleLoadedListener) {
         this.context = context;
         this.scheduleLoadedListener = scheduleLoadedListener;
@@ -116,6 +114,7 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
             e.printStackTrace();
         }
 
+        int NULL_HOUR = -1;
         return NULL_HOUR;
     }
 
@@ -130,7 +129,7 @@ public class ScheduleInteractorImpl implements ScheduleInteractor{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
                     User currentUser = new User();
-                    ArrayList<User> users = new ArrayList<User>();
+                    ArrayList<User> users = new ArrayList<>();
                     for (DataSnapshot usersSnapShot : dataSnapshot.getChildren()) {
                         User user = usersSnapShot.getValue(User.class);
                         if(!user.getFirebaseId().equals(uID)) {

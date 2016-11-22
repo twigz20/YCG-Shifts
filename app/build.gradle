@@ -40,7 +40,6 @@ dependencies {
     compile 'joda-time:joda-time:2.9.4'
     compile 'com.android.support:support-v4:25.0.0'
     compile 'javax.annotation:javax.annotation-api:1.2'
-    compile 'com.google.android.gms:play-services-auth:9.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile ('com.github.ganfra:material-spinner:1.1.1'){

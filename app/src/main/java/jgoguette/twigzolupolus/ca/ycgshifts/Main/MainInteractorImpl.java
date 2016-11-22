@@ -161,11 +161,10 @@ public class MainInteractorImpl implements MainInteractor{
      * @param drawableId - drawable res id
      * @return - uri
      */
-    public static final Uri getUriToDrawable(@NonNull Context context, @AnyRes int drawableId) {
-        Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+    public static Uri getUriToDrawable(@NonNull Context context, @AnyRes int drawableId) {
+        return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
                 "://" + context.getResources().getResourcePackageName(drawableId)
                 + '/' + context.getResources().getResourceTypeName(drawableId)
                 + '/' + context.getResources().getResourceEntryName(drawableId) );
-        return imageUri;
     }
 }

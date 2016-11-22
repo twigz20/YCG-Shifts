@@ -20,14 +20,13 @@ public class FeedsInteractorImpl implements FeedsInteractor {
 
     private Context context;
     private OnFeedsFetchedListener listener;
-    private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
     public FeedsInteractorImpl(Context context, OnFeedsFetchedListener listener) {
         this.context = context;
         this.listener = listener;
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 

@@ -51,7 +51,6 @@ public class ScheduleFragment extends Fragment
         implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener,
         WeekView.EmptyViewLongPressListener, ScheduleView, ShiftTradeDialogFragment.ScheduleMessageDialogFragmentEvents{
 
-    private final int NULL_HOUR = -1;
     private final int DEFAULT_HOUR = 6;
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
@@ -267,16 +266,16 @@ public class ScheduleFragment extends Fragment
             Date date = dateFormat.parse(dateFormat.format(event.getStartTime().getTime()));
             LocalDateTime localDate = new LocalDateTime(date);
 
-            DateFormat targetFormat = new SimpleDateFormat("MMM dd, yyyy (z)");
+            DateFormat targetFormat = new SimpleDateFormat("MMM dd, yyyy (z)", Locale.CANADA);
             Date d = dateFormat.parse(dateFormat.format(event.getStartTime().getTime()));
             String formattedDate = targetFormat.format(date);
 
-            DateFormat targetFormat2 = new SimpleDateFormat("hh:mm aaa");
+            DateFormat targetFormat2 = new SimpleDateFormat("hh:mm aaa", Locale.CANADA);
             Date d2 = dateFormat.parse(dateFormat.format(event.getStartTime().getTime()));
             String formattedTime = targetFormat2.format(date);
 
             date = dateFormat.parse(dateFormat.format(event.getEndTime().getTime()));
-            DateFormat targetFormat3 = new SimpleDateFormat("hh:mm aaa");
+            DateFormat targetFormat3 = new SimpleDateFormat("hh:mm aaa", Locale.CANADA);
             Date d3 = dateFormat.parse(dateFormat.format(event.getEndTime().getTime()));
             String formattedTime2 = targetFormat3.format(date);
 
@@ -332,6 +331,7 @@ public class ScheduleFragment extends Fragment
     public void onScheduleLoaded(ArrayList<Shift> shifts, int hour) {
         this.shifts = shifts;
 
+        int NULL_HOUR = -1;
         if(hour != NULL_HOUR)
             mWeekView.goToHour(hour);
         else

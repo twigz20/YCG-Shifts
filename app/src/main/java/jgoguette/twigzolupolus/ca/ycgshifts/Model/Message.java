@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Message implements Serializable {
 
     public enum Type {
-        NORMAL_NOTIF, SHIFT_SWAP_NOTIF;
+        NORMAL_NOTIF, SHIFT_SWAP_NOTIF
     }
 
     private String receiver;

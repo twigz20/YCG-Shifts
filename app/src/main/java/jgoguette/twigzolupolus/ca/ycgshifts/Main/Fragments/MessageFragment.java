@@ -140,7 +140,6 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
         }
 
         messageAdapter.markItemRead(position);
-
         if(messages.get(position).getType().equals(messages.get(position)
                 .convertTypeToString(Message.Type.SHIFT_SWAP_NOTIF))) {
 

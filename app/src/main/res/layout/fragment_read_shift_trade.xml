@@ -34,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/no_picture"
-                android:id="@+id/shiftSwapImage" />
+                android:id="@+id/shiftSwapImage"
+                android:contentDescription="ProfilePic"/>
 
             <TextView
                 android:text="TextView"
@@ -108,7 +109,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/shiftSwapMessage"
-                android:layout_weight="1"
                 android:textColor="@color/black" />
         </LinearLayout>
 

@@ -85,7 +85,7 @@ public class NotificationService extends Service {
         databaseReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Message> notificationRequests = new ArrayList<Message>();
+                List<Message> notificationRequests = new ArrayList<>();
                 Boolean displayNotification = false;
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message notification =

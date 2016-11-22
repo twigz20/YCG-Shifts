@@ -28,7 +28,7 @@ import jgoguette.twigzolupolus.ca.ycgshifts.R;
  * create an instance of this fragment.
  */
 public class FeedsFragment extends Fragment implements FeedsView {
-    Context context;
+    private Context context;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
