@@ -288,15 +288,14 @@ public class ScheduleFragment extends Fragment
                         shift.setShiftTradeRequestSent(true);
                         message.setDate(formattedDate);
                         message.setTime(formattedTime3);
-
                         message.setShift(shift);
 
-                        Toast.makeText(getActivity(), "Long pressed event: \n" + formattedDate
+                        Toast.makeText(context, "Long pressed event: \n" + formattedDate
                                 + "\n" + formattedTime3, Toast.LENGTH_SHORT).show();
 
                         ShiftTradeDialogFragment shiftTradeDialogFragment = new ShiftTradeDialogFragment();
 
-                        shiftTradeDialogFragment.setScheduleMessageFragmentEvents(ScheduleFragment.this);
+                        shiftTradeDialogFragment.setScheduleMessageFragmentEvents(this);
                         // Show Alert DialogFragment
                         shiftTradeDialogFragment
                                 .show(((MainActivity) context).getSupportFragmentManager(), "Alert Dialog Fragment");
@@ -305,8 +304,6 @@ public class ScheduleFragment extends Fragment
                     }
                 }
             }
-
-
         } catch (ParseException e) {
             e.printStackTrace();
         }

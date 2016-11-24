@@ -56,6 +56,8 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
         setTitle();
 
         to = (MultiAutoCompleteTextView) view.findViewById(R.id.editTextTo);
+        subject = (EditText)view.findViewById(R.id.message_subject);
+        message = (EditText)view.findViewById(R.id.message);
 
         getUserNames();
 
@@ -63,9 +65,7 @@ public class SendMessageFragment extends Fragment implements SendMessageView {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                subject = (EditText)view.findViewById(R.id.editTextSubject);
-                message = (EditText)view.findViewById(R.id.etStatusMessage);
-                presenter.sendMessage(to.getText().toString(),subject.getText().toString(), message.getText().toString());
+                presenter.sendMessage(to.getText().toString(),subject.getText().toString(),message.getText().toString());
             }
         });
 

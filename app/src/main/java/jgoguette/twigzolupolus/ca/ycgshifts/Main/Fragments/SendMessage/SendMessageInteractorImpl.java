@@ -67,7 +67,7 @@ class SendMessageInteractorImpl implements SendMessageInteractor {
                                 String firebaseUID = firebaseAuth
                                         .getCurrentUser()
                                         .getUid();
-                                if (!firebaseUID.isEmpty() && !user.getFirebaseId().equals(firebaseUID)) {
+                                if (!user.getFirebaseId().equals(firebaseUID)) {
                                     users.add(user);
                                 } else {
                                     sender = user.getName();

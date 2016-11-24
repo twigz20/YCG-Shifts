@@ -2,73 +2,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/nav_header_vertical_spacing"
     tools:context="jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.SendBlastFragment">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_create_announcement"
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".SendAnnouncementActivity"
-        android:orientation="vertical">
+        android:weightSum="1"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:layout_below="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/blastMessage"
+            android:layout_weight="0.27"
+            android:hint="Enter Blast Message Here............." />
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="1">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:text="Message:"
-                android:layout_width="match_parent"
+            <Button
+                android:text="Send"
+                android:layout_width="142dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/message"
-                android:layout_alignLeft="@+id/message"
-                android:layout_alignStart="@+id/message"
-                android:id="@+id/textView4" />
+                android:layout_alignTop="@+id/bCancel"
+                android:layout_alignLeft="@+id/etStatusMessage"
+                android:layout_alignStart="@+id/etStatusMessage"
+                android:id="@+id/sendBlast"
+                android:layout_marginLeft="25dp"/>
 
-            <EditText
-                android:layout_width="match_parent"
+            <Button
+                android:text="Cancel"
+                android:layout_width="142dp"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:layout_below="@+id/textView3"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/blastMessage"
-                android:layout_weight="0.27"
-                android:hint="Enter Blast Message Here............." />
+                android:layout_below="@+id/etStatusMessage"
+                android:layout_alignRight="@+id/etStatusMessage"
+                android:layout_alignEnd="@+id/etStatusMessage"
+                android:id="@+id/cancelBlast"
+                android:layout_marginLeft="25dp"/>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:text="Send"
-                    android:layout_width="142dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/bCancel"
-                    android:layout_alignLeft="@+id/etStatusMessage"
-                    android:layout_alignStart="@+id/etStatusMessage"
-                    android:id="@+id/sendBlast"
-                    android:layout_marginLeft="25dp"/>
-
-                <Button
-                    android:text="Cancel"
-                    android:layout_width="142dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/etStatusMessage"
-                    android:layout_alignRight="@+id/etStatusMessage"
-                    android:layout_alignEnd="@+id/etStatusMessage"
-                    android:id="@+id/cancelBlast"
-                    android:layout_marginLeft="25dp"/>
-
-
-            </LinearLayout>
 
         </LinearLayout>
 

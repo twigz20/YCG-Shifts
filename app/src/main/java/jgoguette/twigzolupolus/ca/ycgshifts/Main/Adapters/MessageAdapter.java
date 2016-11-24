@@ -130,7 +130,7 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
     }
 
     private void markItemReadRange(int positionStart, int itemCount) {
-        for (int i = positionStart; i < itemCount; ++i) {
+        for (int i = positionStart; i <= itemCount; ++i) {
             messageRef.child(messages.get(i).getKey()).child("read").setValue(true);
             messages.get(i).setRead(true);
         }
@@ -177,7 +177,7 @@ public class MessageAdapter extends SelectableAdapter<MessageAdapter.ViewHolder>
     }
 
     private void markItemUnreadRange(int positionStart, int itemCount) {
-        for (int i = positionStart; i < itemCount; ++i) {
+        for (int i = positionStart; i <= itemCount; ++i) {
             messageRef.child(messages.get(i).getKey()).child("read").setValue(false);
             messages.get(i).setRead(false);
         }

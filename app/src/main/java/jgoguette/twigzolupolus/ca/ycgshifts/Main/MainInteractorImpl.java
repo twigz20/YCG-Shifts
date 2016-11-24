@@ -59,7 +59,7 @@ public class MainInteractorImpl implements MainInteractor{
         //Referring to the name of the User who has logged in currently and adding a valueChangeListener
         databaseReference.child(context.getString(R.string.users_table))
                 .child(firebaseAuth.getCurrentUser().getUid())
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                 //onDataChange is called every time the name of the User changes in your Firebase Database
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

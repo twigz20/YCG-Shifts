@@ -25,7 +25,7 @@
     <color name="bright_red">#d70000</color>
 
     <color name="selected_overlay">#7D59dbe0</color>
-    <color name="selected_overlay_primary">#7DCDDC39</color>
+    <color name="selected_overlay_primary">#7D87CEEB</color>
 
     <color name="primary_light">#C5CAE9</color>
     <color name="colorText">#FFFFFF</color>

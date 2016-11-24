@@ -25,6 +25,8 @@ public interface MainView {
 
     void navigateToHome();
 
+    void navigateToProfile();
+
     void navigateToMessages();
     void navigateToReadMessage(Message message);
     void navigateToReadShiftTradeMessage(Message message);

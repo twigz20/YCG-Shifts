@@ -3,6 +3,10 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,8 +34,9 @@ public class ShiftTradeDialogFragment extends android.support.v4.app.DialogFragm
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
+
         // Set Dialog Icon
-        alertDialog.setIcon(R.drawable.no_picture);
+         alertDialog.setIcon(resizeImage(R.drawable.no_picture));
         // Set Dialog Title
         alertDialog.setTitle("Shift Swap Request");
         // Set Dialog Message
@@ -63,5 +68,37 @@ public class ShiftTradeDialogFragment extends android.support.v4.app.DialogFragm
         });
 
         return alertDialog.create();
+    }
+
+    public BitmapDrawable resizeImage(int resourceID) {
+        // load the origial BitMap (500 x 500 px)
+
+        Bitmap bitmapOrg = BitmapFactory.decodeResource(getResources(),
+                resourceID);
+
+        int width = bitmapOrg.getWidth();
+        int height = bitmapOrg.getHeight();
+        int newWidth = 400;
+        int newHeight = 400;
+
+        // calculate the scale - in this case = 0.4f
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        // createa matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // rotate the Bitmap
+        // matrix.postRotate(45);
+
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmapOrg, 0, 0,
+                width, height, matrix, true);
+
+        // make a Drawable from Bitmap to allow to set the BitMap
+        // to the ImageView, ImageButton or what ever
+
+        return new BitmapDrawable(resizedBitmap);
     }
 }

@@ -44,6 +44,7 @@ import java.util.List;
 import jgoguette.twigzolupolus.ca.ycgshifts.Login.LoginActivity;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.FeedsFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.MessageFragment;
+import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ProfileFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadMessageFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ReadShiftTradeFragment;
 import jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.ScheduleFragment;
@@ -55,7 +56,8 @@ import jgoguette.twigzolupolus.ca.ycgshifts.Model.User;
 import jgoguette.twigzolupolus.ca.ycgshifts.R;
 
 public class MainActivity extends AppCompatActivity
-        implements MainView, NavigationView.OnNavigationItemSelectedListener {
+        implements MainView, NavigationView.OnNavigationItemSelectedListener,
+        ProfileFragment.OnFragmentInteractionListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity
 
     MainPresenter presenter;
     ProgressDialog progressDialog;
+
+    ImageView profilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,6 +289,8 @@ public class MainActivity extends AppCompatActivity
             navigateToHome();
         } else if (id == R.id.nav_inbox) {
             navigateToMessages();
+        } else if(id == R.id.nav_profile) {
+            navigateToProfile();
         } else if (id == R.id.nav_send_blast) {
             navigateToSendBlast();
         } else if (id == R.id.nav_schedule) {
@@ -295,7 +301,6 @@ public class MainActivity extends AppCompatActivity
             logOut();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -316,7 +321,7 @@ public class MainActivity extends AppCompatActivity
         TextView nav_email = (TextView)findViewById(R.id.nav_email);
         nav_email.setText(user.getEmail());
 
-        ImageView profilePic = (ImageView)findViewById(R.id.imageView);
+        profilePic = (ImageView)findViewById(R.id.imageView);
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,7 +343,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void setProfilePic(Uri uri) {
-        ImageView profilePic = (ImageView) findViewById(R.id.imageView);
+        profilePic = (ImageView)findViewById(R.id.imageView);
         Picasso.with(MainActivity.this)
                 .load(uri)
                 .fit()
@@ -376,6 +381,17 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_home);
         // Initial Fragment
         FeedsFragment fragment = new FeedsFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                fragment,
+                fragment.getTag()
+        ).commit();
+    }
+
+    @Override
+    public void navigateToProfile() {
+        ProfileFragment fragment = new ProfileFragment();
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(
                 R.id.fragmentContainer,
@@ -593,5 +609,11 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    // Will Most Likely Change
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
