@@ -38,7 +38,7 @@ public class ShiftTradeDialogFragment extends android.support.v4.app.DialogFragm
         // Set Dialog Icon
          alertDialog.setIcon(resizeImage(R.drawable.no_picture));
         // Set Dialog Title
-        alertDialog.setTitle("Shift Swap Request");
+        alertDialog.setTitle("Shift Trade Request");
         // Set Dialog Message
         alertDialog.setMessage("Reason For Request:");
 
@@ -72,7 +72,6 @@ public class ShiftTradeDialogFragment extends android.support.v4.app.DialogFragm
 
     public BitmapDrawable resizeImage(int resourceID) {
         // load the origial BitMap (500 x 500 px)
-
         Bitmap bitmapOrg = BitmapFactory.decodeResource(getResources(),
                 resourceID);
 
@@ -85,7 +84,7 @@ public class ShiftTradeDialogFragment extends android.support.v4.app.DialogFragm
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
 
-        // createa matrix for the manipulation
+        // create matrix for the manipulation
         Matrix matrix = new Matrix();
         // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight);

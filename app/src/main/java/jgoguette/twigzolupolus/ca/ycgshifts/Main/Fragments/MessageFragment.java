@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
     private Context context;
 
     RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     MessagePresenter presenter;
 
@@ -76,7 +78,17 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadMessages();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         presenter.loadMessages();
+        presenter.clearNotifications();
 
         return view;
     }
@@ -176,7 +188,7 @@ public class MessageFragment extends Fragment implements MessageView, MessageAda
         if (count == 0) {
             actionMode.finish();
         } else {
-            actionMode.setTitle(String.valueOf(count));
+            actionMode.setTitle(String.valueOf(count) + " item(s) selected");
             actionMode.invalidate();
         }
     }

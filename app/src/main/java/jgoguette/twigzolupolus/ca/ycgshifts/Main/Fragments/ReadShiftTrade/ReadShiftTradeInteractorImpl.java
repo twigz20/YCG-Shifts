@@ -89,6 +89,10 @@ public class ReadShiftTradeInteractorImpl implements ReadShiftTradeInteractor {
         databaseReference.child(context.getString(R.string.messages_table))
                 .child(firebaseAuth.getCurrentUser().getUid())
                 .child(messageKey).removeValue();
+
+        databaseReference.child(context.getString(R.string.notifications_requests_table))
+                .child(firebaseAuth.getCurrentUser().getUid())
+                .child(messageKey).removeValue();
     }
 
     private void removeShiftTradeMessage(String firebaseId, String messageKey) {

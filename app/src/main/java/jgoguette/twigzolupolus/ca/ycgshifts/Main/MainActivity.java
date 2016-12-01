@@ -331,8 +331,7 @@ public class MainActivity extends AppCompatActivity
                 if(permissionCheck == PackageManager.PERMISSION_GRANTED) {
                     openImageIntent();
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    // Permission denied
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                             MY_READ_EXTERNAL_STORAGE);
@@ -566,6 +565,8 @@ public class MainActivity extends AppCompatActivity
             } else {
                 final String action = data.getAction();
                 isCamera = action != null && action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+                // Alternate way to do ^
                 /*if (action == null) {
                     isCamera = false;
                 } else {
@@ -614,6 +615,5 @@ public class MainActivity extends AppCompatActivity
     // Will Most Likely Change
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
 }

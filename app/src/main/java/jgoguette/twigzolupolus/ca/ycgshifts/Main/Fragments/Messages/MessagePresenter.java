@@ -7,5 +7,7 @@ package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.Messages;
 public interface MessagePresenter {
     void loadMessages();
 
+    void clearNotifications();
+
     void onDestroy();
 }

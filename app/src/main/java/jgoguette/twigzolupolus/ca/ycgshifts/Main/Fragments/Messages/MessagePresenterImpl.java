@@ -39,6 +39,11 @@ public class MessagePresenterImpl implements MessagePresenter, MessageInteractor
     }
 
     @Override
+    public void clearNotifications() {
+        messageInteractor.clearNotifications();
+    }
+
+    @Override
     public void onDestroy() {
 
     }

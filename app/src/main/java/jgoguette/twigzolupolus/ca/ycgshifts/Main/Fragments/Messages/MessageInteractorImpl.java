@@ -1,5 +1,6 @@
 package jgoguette.twigzolupolus.ca.ycgshifts.Main.Fragments.Messages;
 
+import android.app.NotificationManager;
 import android.content.Context;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +34,18 @@ public class MessageInteractorImpl implements MessageInteractor {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
+
+    @Override
+    public void clearNotifications() {
+        //Referring to the name of the User who has logged in currently and adding a valueChangeListener
+        databaseReference.child(context.getString(R.string.notifications_requests_table))
+                .child(firebaseAuth.getCurrentUser().getUid()).removeValue();
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.cancelAll();
     }
 
     @Override

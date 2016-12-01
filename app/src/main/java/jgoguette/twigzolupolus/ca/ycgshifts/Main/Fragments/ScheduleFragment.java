@@ -59,6 +59,7 @@ public class ScheduleFragment extends Fragment
     private WeekView mWeekView;
 
     Context context;
+    String shiftSelectedKey;
     private ArrayList<Shift> shifts;
     Message message = new Message();
 
@@ -285,7 +286,6 @@ public class ScheduleFragment extends Fragment
             for(Shift shift : shifts) {
                 if(shift.getStart_time().contains(startDate)) {
                     if (!shift.getShiftTradeRequestSent()) {
-                        shift.setShiftTradeRequestSent(true);
                         message.setDate(formattedDate);
                         message.setTime(formattedTime3);
                         message.setShift(shift);
@@ -362,6 +362,12 @@ public class ScheduleFragment extends Fragment
     public void onMessageEntered(String msg) {
         message.setMessage(msg);
         sendShiftTradeRequest();
+
+        for(Shift shift : shifts) {
+            if(shift.getKey().equals(shiftSelectedKey)) {
+                shift.setShiftTradeRequestSent(true);
+            }
+        }
     }
 
     @Override

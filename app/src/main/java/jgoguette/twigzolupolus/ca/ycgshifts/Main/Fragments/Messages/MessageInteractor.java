@@ -11,6 +11,8 @@ import jgoguette.twigzolupolus.ca.ycgshifts.Model.Message;
  */
 
 public interface MessageInteractor {
+    void clearNotifications();
+
     interface onMessagesLoadedListener {
         void onSuccess(ArrayList<Message> messages, DatabaseReference notificationRef);
         void onFailure(String message);
